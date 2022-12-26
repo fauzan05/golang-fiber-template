@@ -1,7 +1,7 @@
 <?php
 
 namespace Fauzannurhidayat\PhpMvc\Login\App{
-    
+
     function header(string $value)
     {
         echo $value;
@@ -33,7 +33,7 @@ class UserControllerTest extends TestCase
         $this->expectOutputRegex("[Id]");
         $this->expectOutputRegex("[Name]");
         $this->expectOutputRegex("[Password]");
-        $this->expectOutputRegex("[Register new User]");
+        $this->expectOutputRegex("[Register New User]");
     }
     public function testPostRegisterSuccess()
     {
@@ -55,24 +55,24 @@ class UserControllerTest extends TestCase
 
        $this->expectOutputRegex("[Password cannot blank]");
 
-
     }
     public function testPostRegisterDuplicated()
     {
-        $user = new User();
-        $user->id = "fauzan";
-        $user->name = "fauzan";
-        $user->password = "fauzan";
+        // $user = new User();
+        // $user->id = "fauzan";
+        // $user->name = "fauzan";
+        // $user->password = "fauzan";
 
-        $this->userRepository->save($user);
+        //$this->userRepository->save($user);
 
         $_POST['id'] = "fauzan";
         $_POST['name'] = "fauzan";
         $_POST['password'] = "fauzan";
 
         $this->userController->postRegister();
-
-       $this->expectOutputRegex("[User already exist]");
-    }
+        $this->expectOutputRegex("[User already exist]");
+        //$this->expectOutputRegex("[Location: users/login]");
+        //$this->expectOutputRegex("[Register]");
+    }  
 }   
 }
