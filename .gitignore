@@ -1,0 +1,4 @@
+vendor
+architectures.txt
+composer.json
+composer.lock
