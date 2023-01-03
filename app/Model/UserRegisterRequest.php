@@ -1,6 +1,6 @@
 <?php
 
-namespace Fauzannurhidayat\PhpMvc\Login\Model;
+namespace Fauzannurhidayat\Php\TokoOnline\Model;
 
 class UserRegisterRequest
 {

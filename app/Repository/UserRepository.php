@@ -1,8 +1,8 @@
 <?php
 
-namespace Fauzannurhidayat\PhpMvc\Login\Repository;
+namespace Fauzannurhidayat\Php\TokoOnline\Repository;
 
-use Fauzannurhidayat\PhpMvc\Login\Domain\User;
+use Fauzannurhidayat\Php\TokoOnline\Domain\User;
 
 class UserRepository
 {
@@ -22,6 +22,14 @@ class UserRepository
                 $user->password
             ]
         );
+        return $user;
+    }
+    public function update(User $user):User
+    {
+        $statement = $this->connection->prepare("UPDATE users SET name = ?, password = ? WHERE id = ?");
+        $statement->execute([
+            $user->name, $user->password, $user->id
+        ]);
         return $user;
     }
     public function findById(string $id): ?User

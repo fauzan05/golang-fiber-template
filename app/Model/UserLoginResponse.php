@@ -1,8 +1,8 @@
 <?php
 
-namespace Fauzannurhidayat\PhpMvc\Login\Model;
+namespace Fauzannurhidayat\Php\TokoOnline\Model;
 
-use Fauzannurhidayat\PhpMvc\Login\Domain\User;
+use Fauzannurhidayat\Php\TokoOnline\Domain\User;
 
 class UserLoginResponse
 {

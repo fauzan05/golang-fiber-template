@@ -1,6 +1,6 @@
 <?php
 
-namespace Fauzannurhidayat\PhpMvc\Login\Config;
+namespace Fauzannurhidayat\Php\TokoOnline\Config;
 
 use PHPUnit\Framework\TestCase;
 

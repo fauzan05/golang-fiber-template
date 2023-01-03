@@ -1,6 +1,6 @@
 <?php
 
-namespace Fauzannurhidayat\PhpMvc\Login\Domain;
+namespace Fauzannurhidayat\Php\TokoOnline\Domain;
 
 class User
 {

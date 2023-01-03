@@ -1,6 +1,6 @@
 <?php
 
-namespace Fauzannurhidayat\PhpMvc\Login\App;
+namespace Fauzannurhidayat\Php\TokoOnline\App;
 
 use PHPUnit\Framework\TestCase;
 

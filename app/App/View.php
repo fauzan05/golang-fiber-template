@@ -1,6 +1,6 @@
 <?php
 
-namespace Fauzannurhidayat\PhpMvc\Login\App;
+namespace Fauzannurhidayat\Php\TokoOnline\App;
 
 class View
 {
@@ -13,7 +13,7 @@ class View
     public static function Redirect(string $url)
     {
         header("Location: $url");
-        if(getenv("mode") != "test"){
+        if (getenv("mode") != "test") {
             exit();
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Fauzannurhidayat\PhpMvc\Login\Exception;
+namespace Fauzannurhidayat\Php\TokoOnline\Exception;
 
 class ValidationException extends \Exception
 {
