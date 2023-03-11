@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="http://localhost/toko_online/public/assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <hr class="nav-admin-top">
+    <h1 class="title-admin-panel">Product</h1>
+    <nav class="nav-admin">
+        <div class="logo-admin">
+            <h4 class="fab fa-apple"> iStore</h4>
+        </div>
+        <ul class="nav-menu-admin">
+            <li class="nav-item-admin"><a class="nav-link-admin" href="#">Dashboard</a></li>
+            <li class="nav-item-admin"><a class="nav-link-admin" href="#">Product</a></li>
+            <li class="nav-item-admin"><a class="nav-link-admin" href="#">Category</a></li>
+            <li class="nav-item-admin"><a class="nav-link-admin" href="#">User</a></li>
+            <li class="nav-item-admin"><a class="nav-link-admin" href="#">Order</a></li>
+            <li class="nav-item-admin"><a class="nav-link-admin" href="#">Sales Report</a></li>
+            <li class="nav-item-admin"><a class="nav-link-admin" href="#">Logout</a></li>
+        </ul>
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </nav>
+    <div class="dashboard-admin">
+    </div>
+    <div class="form-edit-product1">
+        <form action="#" method="post">
+            <img src="" alt="">
+            <div class="input-group">
+                <label for="name" class="register-label">Name</label>
+                <input type="text" name="name" class="register-input" placeholder="name" id="name" />
+            </div>
+            <div class="input-group">
+                <label for="gender" class="register-label">Category</label>
+                <select name="gender" id="gender">
+                    <option value="iPhone">iPhone</option>
+                    <option value="iPad">iPad</option>
+                    <option value="Mac">Mac</option>
+                    <option value="Watch">Watch</option>
+                    <option value="Tv">Tv</option>
+                    <option value="Accessories">Accessories</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="price" class="register-label">Price</label>
+                <input type="text" name="price" class="register-input" placeholder="price" />
+            </div>
+            <div class="input-group">
+                <label for="color" class="register-label">Color</label>
+                <select name="color" id="color">
+                    <option value="grey">Grey</option>
+                    <option value="red">Red</option>
+                    <option value="space-black">Space Black</option>
+                    <option value="white">White</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="blue">Blue</option>
+                    <option value="starlight">Starlight</option>
+                    <option value="pink">Pink</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="capacity" class="register-label">Capacity</label>
+                <select name="capacity" id="capacity">
+                    <option value="16GB">16 Gb</option>
+                    <option value="32GB">32 Gb</option>
+                    <option value="64GB">54 Gb</option>
+                    <option value="128GB">128 Gb</option>
+                    <option value="256GB">256 Gb</option>
+                    <option value="512GB">512 Gb</option>
+                    <option value="1TB">1 Tb</option>
+                </select>
+            </div>      
+            <button class="register-button"><a href="#" class="a">Save</a></button>
+    </div>
+    <div class="form-edit-product2">
+        <div class="input-group">
+            <label class="register-label">Description</label>
+            <textarea id="description" type="text" name="description" class="register-input-textarea" />
+            </textarea>
+        </div>
+    </div>
+    </form>
+
+
+    <script src="http://localhost/toko_online/public/assets/js/script.js"></script>
+</body>
+
+</html>

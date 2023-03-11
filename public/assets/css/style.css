@@ -1,0 +1,718 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+/* USER */
+a{
+  text-decoration: none;
+}
+body{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-decoration: none;
+}
+.directory{
+  text-decoration: none;
+  color: black;
+  margin: 20px;
+}
+.a{
+  text-decoration: none;
+  color: #fff;
+}
+.a-back{
+  position: absolute;
+  text-decoration: none;
+  color: black;
+  top: 18%;
+  left: 17%;
+}
+select{
+  border: none;
+}
+/* button */
+.edit-button{
+  height: 20px;
+  width: 35px;
+  border-radius: 5px;
+  font-size: 10px;
+  background: green;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.edit-button:hover{
+  background: rgb(3, 75, 3);
+}
+.detail-button{
+  height: 20px;
+  width: 35px;
+  border-radius: 5px;
+  font-size: 10px;
+  background: rgb(44, 44, 254);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.detail-button:hover{
+  background: rgb(17, 17, 185);
+}
+.delete-button{
+  height: 20px;
+  width: 35px;
+  border-radius: 5px;
+  font-size: 10px;
+  background: red;
+  color: #fff;
+  border: none;
+  cursor: pointer; 
+}
+.delete-button:hover{
+  background: rgb(207, 3, 3);
+}
+
+/* Grid */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  margin: 20px;
+  align-items: center;
+  padding-left: 10px;
+}
+article{
+  cursor: pointer;
+}
+img{
+  margin: 20px;
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+}
+.content{
+  margin: 10px;
+  color: black;
+}
+.grid > article{
+  text-align: center;
+  border: 2px solid #e8e8e8;
+  border-radius: 5px;
+  width: 250px;
+  margin: 30px;
+}
+.grid > article:hover{
+  box-shadow: 2px 2px 8px #444, 0px -2px 8px #444;
+}
+.content{
+  cursor: pointer;
+}
+
+
+/* Navbar */
+ nav{
+  display: flex;
+  background-color: black;
+  justify-content: space-around;;
+  padding: 20px 0;
+  height: 50px;
+  align-items: center;
+}
+.nav-menu{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 60px;
+}
+.nav-link{
+  transition: 0.7s ease;
+  text-decoration: none;
+  color: white;
+  font-size: 0.8em;
+}
+.nav-link:hover{
+  color: rgb(198, 184, 184);
+}
+.logo{
+  padding-top: 15px ;
+  color: white;
+  letter-spacing: 2px;
+  font-size: 1.5rem;
+}
+nav ul{
+  display: flex;
+  list-style: none;
+  width: 40%;
+  justify-content: space-between;
+  margin: 10%;
+} 
+
+/* hamburger */
+.hamburger{
+  display: none;
+  cursor: pointer;
+}
+
+.bar{
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background-color: white;
+}
+
+/* login */
+.login-form{
+  position: absolute;
+  left: 55%;
+  top: 35%;
+}
+.login-logo{
+  position: absolute;
+  left: 10%;
+  bottom: 40%;
+  font-size: 2rem;
+  letter-spacing: 5px;
+}
+.register-link{
+  position: absolute;
+  left: 22%;
+  bottom: 20%;;
+}
+.register-link-redirect{
+  position: absolute;
+  left: 23.5%;
+  bottom: 15%;
+  color: blue;
+}
+.login-input{
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  outline: none;
+  font-size: 15px;
+  height: 20px;
+  width: 80%;
+  padding: 25px;
+}
+.login-button{
+  margin-top: 30px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.login-button:hover{
+  background: grey;
+}
+.alert-login{
+  position: absolute;
+  top: 25%;
+  left: 55%;
+  color: red;
+}
+
+
+/* register */
+.form-register1{
+  position: absolute;
+  left: 56%;
+  top: 25%;
+  padding-bottom: 50px;
+}
+.form-register2{
+  position: absolute;
+  right: 10%;
+  top: 25%;
+}
+.input-group{
+  padding: 10px;
+  display: flex;
+  flex-direction:column;
+  margin-bottom: 20px;
+  width: 100%;
+  top: 40%;
+  right: 56%;
+}
+.register-input{
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  padding: 15px;
+}
+.register-input-textarea{
+  display: flex;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 200px;
+  height: 100px;
+  max-width: 200px;
+  min-width: 200px;
+  max-height: 200px;
+}
+.register-input-textarea:focus{
+  outline: none;
+}
+.register-input:focus{
+  outline: none;
+}
+.register-logo{
+  position: absolute;
+  left: 7%;
+  bottom: 40%;
+  font-size: 5rem;
+  letter-spacing: 5px;
+}
+.login-link{
+  position: absolute;
+  left: 22%;
+  bottom: 20%;
+}
+.login-link-redirect{
+  position: absolute;
+  left: 25%;
+  bottom: 15%;
+  color: blue;
+}
+.register-label{
+  margin-bottom: 15px;
+}
+.register-button{
+  margin-top: 30px;
+  margin-left: 12px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.register-button:hover{
+  background: grey;
+}
+
+/* product detail */
+.container-product{
+  background-color: white;
+   padding: 20px;
+   border: 2px solid #4444;
+   width: 35%;
+   height: 500px;
+   position: absolute;
+   top: 25%;
+  left: 40%;
+}
+.img-product-detail{
+  position: absolute;
+  top: 25%;
+  left: 15%;
+}
+.img-product-edit{
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: -10%;
+  left: 240%;
+  border: 1px solid #4444; 
+}
+.addtocart-button{
+  margin-top: 30px;
+  margin-left: 12px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.addtocart-button:hover{
+  background: grey;
+}
+.buynow-button{
+  margin-top: 30px;
+  margin-left: 12px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.buynow-button:hover{
+  background: grey;
+}
+
+/* transaction-success/fail*/
+
+.container-transaction{
+   background-color: white;
+   padding: 20px;
+   border: 2px solid #4444;
+   width: 35%;
+   height: 500px;
+   position: absolute;
+   top: 25%;
+  left: 40%; 
+}
+.backtohomepage{
+  margin-top: 30px;
+  margin-left: 12px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer; 
+}
+
+.backtohomepage:hover{
+  background: grey;
+}
+
+/* order-menu */
+.grid-order{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  margin: 20px;
+  padding-left: 10px;
+}
+article{
+  cursor: pointer;
+}
+.order-detail{
+  margin: 10px;
+  color: black;
+  padding-left: 170px;
+  padding-top: 40px;
+}
+.grid-order > article{
+  text-align: left;
+  border: 2px solid #e8e8e8;
+  border-radius: 5px;
+  height: 200px;
+  width: 400px;
+  margin: 30px;
+}
+.grid-order > article:hover{
+  box-shadow: 2px 2px 8px #444, 0px -2px 8px #444;
+}
+.content{
+  cursor: pointer;
+}
+.img-order{
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  padding-top: 30px;
+}
+
+
+/* ADMIN */
+.nav-admin{
+  position: absolute;
+  display: flex;
+  background-color: black;
+  width: 15%;
+  height: 95vh;
+  flex-direction: column;
+}
+.nav-menu-admin{
+  padding-left:1px ;
+  display: flex;
+  justify-content: space-between;
+  align-items: last baseline;
+  gap: 60px;
+  flex-direction: column;
+}
+.nav-link-admin{
+  transition: 0.7s ease;
+  text-decoration: none;
+  color: white;
+  font-size: 0.8em;
+}
+.nav-link-admin:hover{
+  color: rgb(198, 184, 184);
+}
+.logo-admin{
+  padding-top: 5%;
+  padding-bottom: 30%;
+  color: white;
+  letter-spacing: 2px;
+  font-size: 1.5rem;
+}
+.nav-admin ul{
+  display: flex;
+  list-style: none;
+  justify-content: space-between;
+  flex-direction: column;
+} 
+.nav-admin-top{
+  z-index: -1;
+  position: absolute;
+  top: 10%;
+  border: 4px solid #4444;
+  width: 100%;
+}
+.title-admin-panel{
+  position: absolute;
+  left: 20%;
+  top: 2%;
+}
+.dashboard-admin{
+  position: absolute;
+  left: 20%;
+  top: 20%;
+  display: flex;
+  flex-direction: row;
+}
+.container-dashboard-admin{
+  background-color: white;
+   padding: 20px;
+   border: 2px solid #4444;
+   width: auto;
+   height: auto;
+   margin: 20px;
+}
+.list-product-admin{
+  position: absolute;
+  left: 20%;
+  top: 35%;
+}
+.container-list-product-admin{
+  background-color: white;
+   padding: 20px;
+   border: 2px solid #4444;
+   width: auto;
+   height: auto;
+   margin: 20px;
+}
+.table-product{
+  font-size: 15px;
+  display: block;
+  border: none;
+}
+th, td{
+  height: 20px;
+  float: left;
+  border: 1px solid #4444;
+  padding: 10px;
+}
+.table-product > tbody > tr > td{
+  text-align: center;
+  width: 80px;
+}
+.table-product > thead > tr > th{
+  text-align: center;
+  width: 80px;
+}
+.table-product > thead{
+  width: 80px;
+}
+.table-product > tbody{
+  display: block;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+.add-product-button{
+  position: absolute;
+  margin-top: 40px;
+  margin-left: 10px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  top: 30%;
+  left: 270%;
+}
+.add-product-button:hover{
+  background: grey;
+}
+.edit-product-button{
+  position: absolute;
+  margin-top: 40px;
+  margin-left: 10px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  top: 40%;
+  left: 270%;
+}
+.edit-product-button:hover{
+  background: grey;
+}
+.edit-profile-button{
+  position: absolute;
+  margin-top: 40px;
+  margin-left: 10px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  bottom: -5%;
+  left: 140%;
+}
+.edit-profile-button:hover{
+  background: grey;
+}
+.add-product{
+  position: absolute;
+  margin-top: 40px;
+  margin-left: 10px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  top: 20%;
+  right: 7%;
+}
+.add-product:hover{
+  background: gray;
+}
+.detail-product-admin{
+  position: absolute;
+  left: 30%;
+  top: 20%;
+}
+.container-detail-product-admin{
+   background-color: white;
+   justify-content: space-around;
+   padding: 20px;
+   border: 2px solid #4444;
+   width: auto;
+   height: auto;
+   margin: 20px;
+}
+.container-detail-product-admin >h5{
+  margin: 10px;
+}
+.detail-profile-user{
+  position: absolute;
+  left: 35%;
+  top: 25%;
+}
+.container-detail-profile-user{
+   background-color: white;
+   justify-content: space-around;
+   padding: 20px;
+   border: 2px solid #4444;
+   width: auto;
+   height: auto;
+   margin: 20px;
+}
+.container-detail-profile-user >h5{
+  margin: 10px;
+}
+.form-edit-product1{
+  position: absolute;
+  left: 25%;
+  top: 25%;
+  padding-bottom: 50px;
+}
+.form-edit-product2{
+  position: absolute;
+  right: 35%;
+  top: 25%;
+}
+.edit-product-admin{
+  position: absolute;
+  left: 50%;
+  top: 20%;
+}
+.add-product-image{
+  width: 200px;
+  height: 200px;
+}
+
+.edit-user{
+  position: absolute;
+  margin-top: 40px;
+  margin-left: 10px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  background: black;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  bottom: -10%;
+  left: 30%;
+}
+.edit-user:hover{
+  background: gray;
+}
+
+
+/* responsive breakpoints */
+
+/* ukuran tablet */
+@media screen and (max-width: 768px){
+    nav ul{
+      width: 50%;
+    }
+    .nav-admin ul{
+      height: 100%;
+    }
+}
+
+/* ukuran mobile */
+@media screen and (max-width:576px) {
+  .hamburger{
+    position: fixed;
+    display: block;
+    left: 80%;
+  }
+  .hamburger.active .bar:nth-child(2){
+    opacity: 0;
+  }
+  .hamburger.active .bar:nth-child(1){
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger.active .bar:nth-child(3){
+    transform: translateY(-8px) rotate(-45deg);
+  }
+  .nav-menu{
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    gap: 0;
+    flex-direction: column;
+    background-color: black;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+  }
+  .nav-item{
+    margin: 16px 0;
+  }
+  .nav-menu.active{
+    left: 0;
+  }
+  nav ul{
+      display: none;
+    }
+  .logo{
+    position: fixed;
+    left: 20%;
+  }
+}
