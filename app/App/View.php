@@ -12,9 +12,16 @@ class View
     }
     public static function Redirect(string $url)
     {
+        //     echo "
+        // <script>
+        //     alert('$status');
+        //     window.location.href = '$url';
+        // </script>
+        // ";
         header("Location: $url");
         if (getenv("mode") != "test") {
             exit();
         }
+        
     }
 }

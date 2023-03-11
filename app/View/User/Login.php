@@ -1,29 +1,40 @@
-<div class="container col-xl-10 col-xxl-8 px-4 py-5">
-    <?php if (isset($model['error'])) { ?>
-        <div class="row">
-            <div class="alert alert-danger" role="alert">
-                <?= $model['error'] ?>
-            </div>
+    <nav>
+        <div class="logo">
+            <a href="/toko_online/public/" class="fab fa-apple a"> <?= $model['logo'] ?? '' ?></a>
         </div>
-    <?php } ?>
-    <div class="row align-items-center g-lg-5 py-5">
-        <div class="col-lg-7 text-center text-lg-start">
-            <h1 class="display-4 fw-bold lh-1 mb-3">Login</h1>
-            <p class="col-lg-10 fs-4">by <a target="_blank" href="https://www.programmerzamannow.com/">Programmer Zaman
-                    Now</a></p>
+        <ul class="nav-menu">
+            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPhone'; ?>">iPhone</a></li>
+            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPad'; ?>">iPad</a></li>
+            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Mac'; ?>">Mac</a></li>
+            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Watch'; ?>">Watch</a></li>
+            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Tv'; ?>">Tv</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>">Cart</a></li>
+        </ul>
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
         </div>
-        <div class="col-md-10 mx-auto col-lg-5">
-            <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/PHP_MVC_LOGIN/public/users/login">
-                <div class="form-floating mb-3">
-                    <input name="id" type="text" class="form-control" id="id" placeholder="id" value="<?= $_POST['id'] ?? '' ?>">
-                    <label for="id">Id</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input name="password" type="password" class="form-control" id="password" placeholder="password">
-                    <label for="password">Password</label>
-                </div>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign On</button>
-            </form>
-        </div>
+    </nav>
+    <br>
+    <a href="#" class="directory">Home/ Login</a>
+    <br>
+    <br>
+    <hr>
+    <p class="alert-login"><?= $model['error'] ?? '' ?></p>
+    <div class="login-logo">
+        <h4 class="fab fa-apple"> Login</h4>
     </div>
-</div>
+    <div class="login-form">
+        <form method="post" action="/toko_online/public/users/login">
+            <input type="text" name="email" class="login-input" placeholder="Email" value="<?= $_POST['email'] ?? '' ?>" />
+            <input type="password" name="password" class="login-input" placeholder="Password" />
+            <br>
+            <button class="login-button">Login</button>
+        </form>
+    </div>
+    <div class="register-link">
+        <p>Dont have any account?</p>
+    </div>
+    <a href="/toko_online/public/users/register" class="register-link-redirect">Create account!</a>

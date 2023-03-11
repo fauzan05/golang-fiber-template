@@ -36,14 +36,14 @@ class HomeControllerTest extends TestCase
     public function testUserLogin()
     {
         $user = new User();
-        $user->id = "14";
+        $user->username = "14";
         $user->name = "Fauzan14";
         $user->password = "Fauzan14";
         $this->userRepository->save($user);
 
         $session = new Session();
         $session->id = uniqid();
-        $session->userId = $user->id;
+        $session->userId = $user->username;
         $this->sessionRepository->save($session);
 
         $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;

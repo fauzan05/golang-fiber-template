@@ -5,7 +5,7 @@ namespace Fauzannurhidayat\Php\TokoOnline\App;
 
 require_once __DIR__ . "/../../app/Controller/HomeController.php";
 require_once __DIR__ . "/../../app/Controller/UserController.php";
-
+require_once __DIR__ . "/../../app/Controller/AdminController.php";
 class Router
 {
     private static array $routes = [];

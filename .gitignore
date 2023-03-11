@@ -2,3 +2,6 @@ vendor
 architectures.txt
 composer.json
 composer.lock
+.DS_Store
+contoh.php
+contoh1.php

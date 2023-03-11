@@ -1,19 +1,59 @@
-<div class="container col-xl-10 col-xxl-8 px-4 py-5">
-    <div class="row align-items-center g-lg-5 py-5">
-        <div class="col-lg-7 text-center text-lg-start">
-            <h1 class="display-4 fw-bold lh-1 mb-3">Login Management</h1>
-            <p class="col-lg-10 fs-4">by <a target="_blank" href="https://www.programmerzamannow.com/">Programmer Zaman
-                Now</a></p>
-        </div>
-        <div class="col-md-10 mx-auto col-lg-5">
-            <div class="p-4 p-md-5 border rounded-3 bg-light">
-                <div class="form-floating mb-3">
-                    <a href="/PHP_MVC_LOGIN/public/users/register" class="w-100 btn btn-lg btn-primary">Register</a>
-                </div>
-                <div class="form-floating mb-3">
-                    <a href="/PHP_MVC_LOGIN/public/users/login" class="w-100 btn btn-lg btn-primary">Login</a>
-                </div>
-            </div>
-        </div>
+  <nav>
+    <div class="logo">
+      <a href="/toko_online/public/" class="fab fa-apple a"> <?= $model['logo'] ?? '' ?></a>
     </div>
-</div>
+    <ul class="nav-menu">
+      <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPhone'; ?>">iPhone</a></li>
+      <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPad'; ?>">iPad</a></li>
+      <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Mac'; ?>">Mac</a></li>
+      <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Watch'; ?>">Watch</a></li>
+      <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Tv'; ?>">Tv</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+      <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/cart?category=<?= $category = 'Cart';?>">Cart</a></li>
+      <?php
+      if ($model['logout'] != null) {
+      ?>
+        <li class="nav-item"><a href="/toko_online/public/users/logout" class="nav-link">Logout</a></li>
+      <?php
+      } else {
+      ?>
+        <li class="nav-item"><a href="/toko_online/public/users/login" class="nav-link">Login</a></li>
+      <?php
+      }
+      ?>
+    </ul>
+    <div class="hamburger">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+  </nav>
+  <br>
+  <a href="#" class="directory">Home/</a>
+  <br>
+  <br>
+  <hr>
+  <main class="grid">
+    <?php
+    $no = 1;
+    if (isset($model['showAllProduct'])) {
+      $products = $model['showAllProduct'];
+      foreach ($products as $product) :
+    ?>
+        <article>
+          <a href="/toko_online/public/users/checkout?id=<?= $product->id ?>">
+            <img src="http://localhost/toko_online/public/assets/images/products/<?= $product->image ?>" alt="">
+            <div class="content">
+              <h2><?= $product->name ?></h2>
+              <p><?= $product->price ?> IDR</p>
+            </div>
+          </a>
+        </article>
+
+
+    <?php
+        $no++;
+      endforeach;
+    }
+    ?>
+  </main>

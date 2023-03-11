@@ -9,26 +9,39 @@ use Fauzannurhidayat\Php\TokoOnline\Repository\UserRepository;
 
 class SessionService
 {
-    public static string $COOKIE_NAME = "FZN";
+    public static string $COOKIE_NAME = "Cookie";
     private SessionRepository $sessionRepository;
     private UserRepository $userRepository;
+
     public function __construct(SessionRepository $sessionRepository, UserRepository $userRepository)
     {
         $this->sessionRepository = $sessionRepository;
         $this->userRepository = $userRepository;
     }
-    public function create (string $userId): Session
+    public function createByEmail (string $email): Session
     {
+        $user = $this->userRepository->findByEmail($email);
         $session = new Session();
         $session->id = uniqid();
-        $session->userId = $userId;
+        $session->userId = $user->id;
 
         $this->sessionRepository->save($session);
         setcookie(self::$COOKIE_NAME, $session->id, time() + (60 * 60 * 24 * 30), "/");
 
         return $session;
     }
+    public function createByUsername (string $username): Session
+    {
+        $user = $this->userRepository->findByUsername($username);
+        $session = new Session();
+        $session->id = uniqid();
+        $session->userId = $user->id;
 
+        $this->sessionRepository->save($session);
+        setcookie(self::$COOKIE_NAME, $session->id, time() + (60 * 60 * 24 * 30), "/");
+
+        return $session;
+    }
     public function destroy()
     {
         $sessionId = $_COOKIE[self::$COOKIE_NAME];
@@ -44,7 +57,6 @@ class SessionService
         {
             return null;
         }
-
         return $this->userRepository->findById($session->userId);
     }
 }

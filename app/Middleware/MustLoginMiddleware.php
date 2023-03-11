@@ -23,7 +23,7 @@ class MustLoginMiddleware implements Middleware
         $user = $this->sessionService->current(); //ada session usernya
         if($user == null)
         {
-            View::Redirect('/PHP_MVC_LOGIN/public/users/login');
+            View::Redirect('/toko_online/public/users/login');
         }
     }
 }

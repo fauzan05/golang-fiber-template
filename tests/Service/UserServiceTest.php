@@ -57,6 +57,7 @@ class UserServiceTest extends TestCase
     {
         $user = new User();
         $user->id = "2";
+        $user->username = "haha";
         $user->name = "Fauzan";
         $user->password = "yaya";
 
@@ -65,6 +66,7 @@ class UserServiceTest extends TestCase
 
         $request = new UserRegisterRequest();
         $request->id = "2";
+        $request->username = "haha";
         $request->name = "Fauzan";
         $request->password = "yaya";
         $this->userService->register($request);

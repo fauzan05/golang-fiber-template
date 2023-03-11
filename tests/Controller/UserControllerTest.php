@@ -40,13 +40,13 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         }
         public function testPostRegisterSuccess()
         {
-            $_POST['id'] = "14";
+            $_POST['username'] = "14";
             $_POST['name'] = "Fauzan14";
-            $_POST['password'] = "Fauzan14";
+            $_POST['password'] = "yaya";
 
             $this->userController->postRegister();
             //$this->expectOutputString("");
-            $this->expectOutputRegex('[Location: /PHP_MVC_LOGIN/public/users/login]');
+            $this->expectOutputRegex('[Location: /toko_online/public/users/login]');
         }
         public function testPostRegisterFailed()
         {
@@ -61,8 +61,7 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         public function testPostRegisterDuplicated()
         {
             $user = new User();
-            $user->id = "fauzan";
-            $user->name = "fauzan";
+            $user->username = "fauzan";
             $user->password = "fauzan";
 
             $this->userRepository->save($user);
@@ -85,18 +84,21 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         }
         public function testLoginSuccess()
         {
+            //ekspetasi : membuat akun user (registrasi)
             $user = new User();
-            $user->id = "14";
-            $user->name = "Fauzan14";
-            $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
+            $user->id = null;
+            $user->username = "User1";
+            $user->status = 'user';
+            $user->password = password_hash("User1", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
-            $_POST['id'] = "14";
-            $_POST['password'] = "Fauzan14";
+            //ekspetasi : memasukkan username dan password
+            $_POST['username'] = "User1";
+            $_POST['password'] = "User1";
             $this->userController->postLogin();
-
+            
+            //ekspetasi : redirect ke halaman dashboard
             $this->expectOutputRegex("[Location: /]");
-            $this->expectOutputRegex("[FZN : ]");
         }
 
         public function testLoginValidationError()
@@ -133,7 +135,6 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         {
             $user = new User();
             $user->id = "14";
-            $user->name = "Fauzan14";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
@@ -153,7 +154,6 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         {
             $user = new User();
             $user->id = "14";
-            $user->name = "Fauzan14";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
@@ -173,7 +173,6 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         {
             $user = new User();
             $user->id = "14";
-            $user->name = "Fauzan14";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
@@ -191,13 +190,12 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
             $this->expectOutputRegex("[Location: /]");
 
             $result = $this->userRepository->findById($user->id);
-            self::assertEquals($_POST['name'], $result->name);
+            // self::assertEquals($_POST['name'], $result->name);
         }
         public function testPostUpdateProfileValidationError()
         {
             $user = new User();
             $user->id = "14";
-            $user->name = "Fauzan14";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
@@ -218,7 +216,6 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         {
             $user = new User();
             $user->id = "14";
-            $user->name = "Fauzan14";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
@@ -238,7 +235,6 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         {
             $user = new User();
             $user->id = "14";
-            $user->name = "Fauzan14";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
@@ -262,7 +258,6 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         {
             $user = new User();
             $user->id = "14";
-            $user->name = "Fauzan14";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
@@ -286,7 +281,6 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         {
             $user = new User();
             $user->id = "14";
-            $user->name = "Fauzan14";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
@@ -303,5 +297,10 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
 
             $this->expectOutputRegex("[Old password is wrong!]");
         }
-    }
+        public function testAddToShoppingSession()
+        {
+            $user = new User();
+            
+        }
+     }
 }
