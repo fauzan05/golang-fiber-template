@@ -1,40 +1,90 @@
-    <nav>
-        <div class="logo">
-            <a href="/toko_online/public/" class="fab fa-apple a"> <?= $model['logo'] ?? '' ?></a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid m-3">
+        <a class="navbar-brand fab fa-apple ms-3 me-5" href="/toko_online/public/" style="letter-spacing: 0.2rem;"><?= $model['logo'] ?? '' ?></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto gap-5">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPhone'; ?>">iPhone</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPad'; ?>">iPad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'Mac'; ?>">Mac</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'Watch'; ?>">Watch</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'Tv'; ?>">Tv</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fa-solid fa-cart-shopping mt-1" aria-current="page" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>"></a>
+                </li>
+                <?php
+                if ($model['logout'] != null) {
+                ?>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>">Cart</a>
+                    </li>
+                <?php
+                }
+                ?>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control form-control-sm me-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+            <ul class="navbar-nav ms-5 me-5">
+                <?php
+                if ($model['userExist'] == null) {
+                ?>
+                    <li class="nav-item me-2 dropdown">
+                        <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/toko_online/public/users/login">Login</a></li>
+                            <li><a class="dropdown-item" href="/toko_online/public/users/register">Register</a></li>
+                        </ul>
+                    </li>
+                <?php
+                }
+                ?>
+            </ul>
         </div>
-        <ul class="nav-menu">
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPhone'; ?>">iPhone</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPad'; ?>">iPad</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Mac'; ?>">Mac</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Watch'; ?>">Watch</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Tv'; ?>">Tv</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>">Cart</a></li>
-        </ul>
-        <div class="hamburger">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-    </nav>
-    <br>
-    <a href="#" class="directory">Home/ Login</a>
-    <br>
-    <br>
-    <hr>
-    <p class="alert-login"><?= $model['error'] ?? '' ?></p>
-    <div class="login-logo">
-        <h4 class="fab fa-apple"> Login</h4>
     </div>
-    <div class="login-form">
-        <form method="post" action="/toko_online/public/users/login">
-            <input type="text" name="email" class="login-input" placeholder="Email" value="<?= $_POST['email'] ?? '' ?>" />
-            <input type="password" name="password" class="login-input" placeholder="Password" />
-            <br>
-            <button class="login-button">Login</button>
+</nav>
+<?php
+if ($model['error'] != null) :
+?>
+    <div class="alert alert-danger text-center" role="alert">
+        <?= $model['error'] ?? '' ?>
+    </div>
+<?php
+endif;
+?>
+<div class="container-fluid">
+    <div class="position-form-login">
+        <form role="form" method="POST" action="/toko_online/public/users/login">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email</label>
+                <input type="text" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" style="width: 350px">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" id="exampleFormControlInput1" placeholder="passwordexample" style="width: 350px">
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Login</button>
         </form>
     </div>
-    <div class="register-link">
-        <p>Dont have any account?</p>
-    </div>
-    <a href="/toko_online/public/users/register" class="register-link-redirect">Create account!</a>
+</div>
+<span class="fab fa-apple position-login-logo" style="letter-spacing: 0.5rem; font-size:5rem">LOGIN</span>
+<div class="container-fluid text-center" style="bottom: 10%; position:absolute">
+    <p>Don't have an any account?</p>
+    <a href="/toko_online/public/users/register">Register Now!</a>
+</div>

@@ -4,12 +4,10 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller;
 
 use Fauzannurhidayat\Php\TokoOnline\App\View;
 use Fauzannurhidayat\Php\TokoOnline\Config\Database;
-use Fauzannurhidayat\Php\TokoOnline\Domain\Cart;
-use Fauzannurhidayat\Php\TokoOnline\Domain\Product;
 use Fauzannurhidayat\Php\TokoOnline\Exception\ValidationException;
 use Fauzannurhidayat\Php\TokoOnline\Model\AddToCartRequest;
+use Fauzannurhidayat\Php\TokoOnline\Model\BuyNowRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserLoginRequest;
-use Fauzannurhidayat\Php\TokoOnline\Model\ShoppingSessionRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserPasswordUpdateRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserProfileUpdateRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserRegisterRequest;
@@ -36,7 +34,8 @@ class UserController
     {
         //berfungsi untuk menampilkan halaman register
         View::Render('User/Register', [
-            'title' => 'Register New User'
+            'title' => 'Register New User',
+            'logo' => 'iStore',
         ]);
     }
     public function postRegister()
@@ -69,7 +68,7 @@ class UserController
     {
         View::Render('User/Login', [
             'title' => 'Login User',
-            "logo" => "iStore",
+            'logo' => 'iStore',
         ]);
     }
     public function postLogin()
@@ -99,7 +98,7 @@ class UserController
     public function logout()
     {
         $this->sessionService->destroy();
-        View::Redirect("/toko_online/public/");
+        View::Redirect('/toko_online/public/');
     }
     public function profile()
     {
@@ -108,8 +107,9 @@ class UserController
         View::Render(
             'User/Profile',
             [
-                "logo" => "iStore",
+                'logo' => 'iStore',
                 'title' => 'User Profile',
+                'userExist' => $session,
                 'id' => $user->id,
                 'firstname' => $user->firstname,
                 'lastname' => $user->lastname,
@@ -118,6 +118,7 @@ class UserController
                 'phoneNumber' => $user->phoneNumber,
                 'address' => $user->address,
                 'jobs' => $user->jobs,
+                'balance' => $user->balance,
                 'dateOfBirth' => $user->dateOfBirth,
                 'username' => $user->username,
                 'status' => $user->status,
@@ -133,7 +134,8 @@ class UserController
             'User/UpdateProfile',
             [
                 'title' => 'Update User Profile',
-                "logo" => "iStore",
+                'logo' => 'iStore',
+                'userExist' => $session,
                 'id' => $user->id,
                 'firstname' => $user->firstname,
                 'lastname' => $user->lastname,
@@ -157,7 +159,6 @@ class UserController
         $request->username = $_POST['username'];
         $request->firstname = $_POST['firstname'];
         $request->lastname = $_POST['lastname'];
-        $request->email = $_POST['email'];
         $request->gender = $_POST['gender'];
         $request->phoneNumber = $_POST['phoneNumber'];
         $request->jobs = $_POST['jobs'];
@@ -167,7 +168,7 @@ class UserController
         try {
             $this->userService->updateProfile($request);
             //redirect ke halaman dashboard
-            View::Redirect('/toko_online/public/users/profile');
+            View::Redirect('/toko_online/public/users/dashboard');
         } catch (ValidationException $exception) {
             View::Render(
                 'User/UpdateProfile',
@@ -175,7 +176,7 @@ class UserController
                     'title' => 'Update User Profile',
                     'error' => $exception->getMessage(),
                     'title' => 'Update User Profile',
-                    "logo" => "iStore",
+                    'logo' => 'iStore',
                     'id' => $user->id,
                     'firstname' => $user->firstname,
                     'lastname' => $user->lastname,
@@ -195,10 +196,10 @@ class UserController
     {
         $user = $this->sessionService->current();
         View::Render('User/Password', [
-            "title" => "Update User Password",
-            "user" => [
-                "username" => $user->username
-            ]
+            'title' => 'Update User Password',
+            'logo' => 'iStore',
+            'userExist' => $user,
+            'username' => $user->username 
         ]);
     }
     public function postUpdatePassword()
@@ -220,9 +221,8 @@ class UserController
                 [
                     'title' => 'Update User Password',
                     'error' => $exception->getMessage(),
-                    'user' => [
-                        "username" => $user->username,
-                    ]
+                        'username' => $user->username,
+                    
                 ]
             );
         }
@@ -232,21 +232,21 @@ class UserController
         if ($user = $this->sessionService->current()) {
             $showAllProduct = $this->userRepository->showProductByCategory($_GET['category']);
             View::Render('User/ListProduct', [
-                "title" => "iStore",
-                "logo" => "iStore",
-                "user" => $user->username,
-                "showAllProduct" => $showAllProduct,
-                "logoutButton" => "Logout",
-                "logout" => "logout"
+                'title' => 'iStore',
+                'logo' => 'iStore',
+                'username' => $user->username,
+                'showAllProduct' => $showAllProduct,
+                'logoutButton' => 'Logout',
+                'logout' => 'logout'
             ]);
         } else if ($user == null) {
             $showAllProduct = $this->userRepository->showProductByCategory($_GET['category']);
             View::Render('User/ListProduct', [
-                "title" => "iStore",
-                "logo" => "iStore",
-                "showAllProduct" => $showAllProduct,
-                "logoutButton" => "Login",
-                "login" => "login"
+                'title' => 'iStore',
+                'logo' => 'iStore',
+                'showAllProduct' => $showAllProduct,
+                'logoutButton' => 'Login',
+                'login' => 'login'
             ]);
         }
     }
@@ -254,15 +254,29 @@ class UserController
     {
         $user = $this->sessionService->current();
         $cartsArray = $this->userRepository->showAllCart($user->id);
+        
         View::Render(
             'User/Cart',
             [
-                "title" => "iStore",
-                "logo" => "iStore",
-                "user" => $user->username,
-                "cartsArray" => $cartsArray
+                'title' => 'iStore',
+                'logo' => 'iStore',
+                'userExist' => $user,
+                'username' => $user->username,
+                'cartsArray' => $cartsArray
             ]
         );
+    }
+    public function deleteCart()
+    {
+        $this->sessionService->current();
+        View::Render('User/Delete', []);
+        $id = trim($_GET['id']);
+        if(isset($id))
+        {
+            $this->userRepository->deleteCartById($id);
+            View::Redirect('/toko_online/public/users/cart');
+        }
+        
     }
     public function productDetail()
     {
@@ -271,59 +285,84 @@ class UserController
         View::Render(
             'User/ProductDetail',
             [
-                "title" => "iStore",
-                "logo" => "iStore",
-                "user" => $user->username,
-                "productId" => $product->id,
-                "productName" => $product->name,
-                "productStock" => $product->stock,
-                "productColor" => $product->color,
-                "productCapacity" => $product->capacity,
-                "productPrice" => $product->price,
-                "productImage" => $product->image
+                'title' => 'iStore',
+                'logo' => 'iStore',
+                'username' => $user->username,
+                'productId' => $product->id,
+                'productName' => $product->name,
+                'productStock' => $product->stock,
+                'productColor' => $product->color,
+                'productCapacity' => $product->capacity,
+                'productPrice' => $product->price,
+                'productImage' => $product->image,
+                'productDescription' => $product->description
             ]
         );
     }
     public function postProductDetail()
     {
         $user = $this->sessionService->current();
-        if ($_POST['addToCart'] == "true") {
+        if ($_POST['addToCart'] == 'true') {
             $price = intval($_POST['price']);
             $quantity = intval($_POST['quantity']);
             $request = new AddToCartRequest();
             $request->id = null;
             $request->userId = $user->id;
-            $request->total =  $price * $quantity ;
+            $request->total =  $price * $quantity;
             $request->productId = $_POST['id'];
             $request->quantity = $quantity;
-            
+
             try {
                 $this->userService->addToCart($request);
                 //redirect to cart
-                View::Redirect("/toko_online/public/users/cart");
+                View::Redirect('/toko_online/public/users/cart');
             } catch (ValidationException $exception) {
                 View::Render(
                     'User/ProductDetail',
                     [
                         'error' => $exception->getMessage(),
-                        "title" => "iStore",
-                        "logo" => "iStore",
-                        "user" => $user->username
+                        'title' => 'iStore',
+                        'logo' => 'iStore',
+                        'username' => $user->username
                     ]
                 );
             }
-        }else if (isset($_POST['buyNow']) == "true") {
+        } else if (isset($_POST['buyNow']) == 'true') {
             // var_dump($_POST);
-            View::Redirect("/toko_online/public/users/checkoutStatus");
+            // die;
+            $price = intval($_POST['price']);
+            $request = new BuyNowRequest();
+            $request->userId = $user->id;
+            $request->total = intval($_POST['quantity']);
+            $request->amount = intval($price * $request->total);
+            $request->productId = $_POST['id'];
+            $this->userService->transaction($request);
+            View::Redirect('/toko_online/public/users/checkoutStatus');
         }
     }
     public function checkoutStatus()
     {
+        $user = $this->sessionService->current();
         View::Render(
             'User/CheckoutStatus',
             [
-                "title" => "iStore",
-                "logo" => "iStore"
+                'title' => 'iStore',
+                'logo' => 'iStore',
+                'userExist' => $user,
+                'username' => $user->username,
+            ]
+        );
+    }
+    public function transaction()
+    {
+        $user = $this->sessionService->current();
+        View::Render(
+            'User/Transaction',
+            [
+                'title' => 'iStore',
+                'logo' => 'iStore',
+                'username' => $user->username,
+                'userExist' => $user,
             ]
         );
     }

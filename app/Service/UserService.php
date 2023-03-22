@@ -5,6 +5,7 @@ namespace Fauzannurhidayat\Php\TokoOnline\Service;
 use Fauzannurhidayat\Php\TokoOnline\Config\Database;
 use Fauzannurhidayat\Php\TokoOnline\Domain\Cart;
 use Fauzannurhidayat\Php\TokoOnline\Domain\CartItem;
+use Fauzannurhidayat\Php\TokoOnline\Domain\Order;
 use Fauzannurhidayat\Php\TokoOnline\Domain\Product;
 use Fauzannurhidayat\Php\TokoOnline\Domain\ShoppingSession;
 use Fauzannurhidayat\Php\TokoOnline\Domain\User;
@@ -15,6 +16,8 @@ use Fauzannurhidayat\Php\TokoOnline\Model\AddToCartRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\AddToCartResponse;
 use Fauzannurhidayat\Php\TokoOnline\Model\AdminLoginRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\AdminLoginResponse;
+use Fauzannurhidayat\Php\TokoOnline\Model\BuyNowRequest;
+use Fauzannurhidayat\Php\TokoOnline\Model\BuyNowResponse;
 use Fauzannurhidayat\Php\TokoOnline\Model\EditProductRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\EditProductResponse;
 use Fauzannurhidayat\Php\TokoOnline\Model\ShoppingSessionRequest;
@@ -160,7 +163,6 @@ class UserService
             $user->username = $request->username;
             $user->firstname = $request->firstname;
             $user->lastname = $request->lastname;
-            $user->email = $request->email;
             $user->gender = $request->gender;
             $user->phoneNumber = $request->phoneNumber;
             $user->jobs = $request->jobs;
@@ -182,10 +184,10 @@ class UserService
     private function validateUserUpdateProfileRequest(UserProfileUpdateRequest $request)
     {
         if (
-            $request->firstname == null || $request->lastname == null || $request->email == null
+            $request->firstname == null || $request->lastname == null 
             || $request->dateOfBirth == null || $request->gender == null || $request->phoneNumber == null
             || $request->address == null || $request->jobs == null ||
-            trim($request->firstname) == "" || trim($request->lastname) == "" || trim($request->email) == ""
+            trim($request->firstname) == "" || trim($request->lastname) == ""
             || trim($request->dateOfBirth) == "" || trim($request->gender) == "" || trim($request->phoneNumber) == ""
             || trim($request->address) == "" || trim($request->jobs) == ""
          ) {
@@ -382,6 +384,27 @@ class UserService
             Database::commitTransaction();
             return $response;
         } catch (\Exception $exception) {
+            Database::rollbackTransaction();
+            throw $exception;
+        }
+    }
+    public function transaction(BuyNowRequest $request):BuyNowResponse
+    {
+        try{
+            Database::beginTransaction();
+            $buyNow = new Order();
+            $buyNow->userId = $request->userId;
+            $buyNow->total = $request->total;
+            $buyNow->amount = $request->amount;
+            $buyNow->productId = $request->productId;
+            $this->userRepository->buyNow($buyNow);
+            $response = new BuyNowResponse();
+            $response->order = $buyNow;
+            Database::commitTransaction();
+            return $response;
+
+        }catch(\Exception $exception)
+        {
             Database::rollbackTransaction();
             throw $exception;
         }

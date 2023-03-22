@@ -28,28 +28,28 @@ class HomeController
         {
             $showAllProduct = $this->userRepository->showAllProduct();
             View::Render('Home/Index', [
-                "title" => "iStore",
-                "logo" => "iStore",
-                "showAllProduct" => $showAllProduct,
-                "loginButton" => "Login"
+                'title' => 'iStore',
+                'logo' => 'iStore',
+                'showAllProduct' => $showAllProduct,
+                'userExist' => null
             ]);
         }else if ($user->status == 'user'){
             $showAllProduct = $this->userRepository->showAllProduct();
             View::Render('User/Dashboard', [
-                "title" => "iStore",
-                "logo" =>"iStore",
-                "user" => $user->username,
-                "showAllProduct" => $showAllProduct,
-                "logoutButton" => "Logout"
+                'title' => 'iStore',
+                'logo' =>'iStore',
+                'user' => $user->username,
+                'showAllProduct' => $showAllProduct,
+                'userExist' => $user
             ]);
         }else if($user->status == 'admin'){
             $countProducts = $this->userRepository->countAllProduct();
             $countUsers = $this->userRepository->countAllUsers();
             View::Render('Admin/Dashboard', [
-                "title" => "iStore Admin",
-                "user" => $user->username,
-                "countAllProducts" => $countProducts,
-                "countAllUsers" => $countUsers        
+                'title' => 'iStore Admin',
+                'user' => $user->username,
+                'countAllProducts' => $countProducts,
+                'countAllUsers' => $countUsers        
             ]);
         }
         

@@ -4,6 +4,7 @@ namespace Fauzannurhidayat\Php\TokoOnline\Repository;
 
 use Fauzannurhidayat\Php\TokoOnline\Domain\Cart;
 use Fauzannurhidayat\Php\TokoOnline\Domain\CartItem;
+use Fauzannurhidayat\Php\TokoOnline\Domain\Order;
 use Fauzannurhidayat\Php\TokoOnline\Domain\Product;
 use Fauzannurhidayat\Php\TokoOnline\Domain\User;
 use Fauzannurhidayat\Php\TokoOnline\Domain\ShoppingSession;
@@ -78,9 +79,9 @@ class UserRepository
     }
     public function update(User $user): User
     {
-        $statement = $this->connection->prepare("UPDATE users SET firstname = ?, lastname  = ?, email = ?, gender = ?, phone_number = ?, jobs = ?, date_of_birth = ?, address = ? WHERE username = ?");
+        $statement = $this->connection->prepare("UPDATE users SET firstname = ?, lastname  = ?, gender = ?, phone_number = ?, jobs = ?, date_of_birth = ?, address = ? WHERE username = ?");
         $statement->execute([
-            $user->firstname, $user->lastname, $user->email, $user->gender, $user->phoneNumber, $user->jobs, $user->dateOfBirth, $user->address, $user->username
+            $user->firstname, $user->lastname, $user->gender, $user->phoneNumber, $user->jobs, $user->dateOfBirth, $user->address, $user->username
         ]);
         return $user;
     }
@@ -105,6 +106,7 @@ class UserRepository
                 $user->username = $row['username'];
                 $user->password = $row['password'];
                 $user->status = $row['status'];
+                $user->balance = $row['balance'];
                 return $user;
             } else {
                 return null;
@@ -349,11 +351,11 @@ class UserRepository
 
         return $cart;
     }
-    public function showAllCart($id): array
+    public function showAllCart($id): ?array
     {
         $statement = $this->connection->prepare("
         SELECT products.id, products.name, products.category, products.color, products.image, products.capacity,
-        products.price, cart_item.id as cart_item_id, cart_item.quantity, cart_item.created_at, shopping_session.user_id from products 
+        products.price, cart_item.id as cart_item_id, cart_item.quantity, cart_item.created_at, shopping_session.user_id, cart_item.session_id from products 
         INNER JOIN cart_item ON cart_item.product_id = products.id
         INNER JOIN shopping_session ON shopping_session.id = cart_item.session_id
         WHERE shopping_session.user_id = ?
@@ -361,7 +363,8 @@ class UserRepository
         $statement->execute([$id]);
         try {
             $array = [];
-            if ($rows = $statement->fetchAll()) {
+            if ($statement->rowCount() > 0) {
+                $rows = $statement->fetchAll();
                 foreach ($rows as $row) {
                     $product = new Product();
                     $product->id = $row['id'];
@@ -375,15 +378,95 @@ class UserRepository
                     $cart->id = $row['cart_item_id'];
                     $cart->quantity = $row['quantity'];
                     $cart->createdAt = $row['created_at'];
+                    $cart->sessionId = $row['session_id'];
                     $array[] = [
                         'product' => $product,
                         'cart' => $cart
                     ];
                 }
                 return $array;
+            }else if ($statement->rowCount() < 1) {
+                return null;
             }
         } finally {
             $statement->closeCursor();
+        }
+    }
+    public function deleteCartById($id): void
+    {
+        $statement = $this->connection->prepare("DELETE FROM cart_item WHERE session_id = ?");
+        $statement->execute([$id]);
+        $statement = $this->connection->prepare("DELETE FROM shopping_session WHERE id = ?");
+        $statement->execute([$id]);
+        $statement->closeCursor();
+    }
+    public function buyNow(Order $order): ?Order
+    {
+        $statement = $this->connection->prepare("INSERT INTO order_details(user_id,total) VALUES(?,?)");
+        $statement->execute([$order->userId, $order->total]);
+        $statement = $this->connection->prepare("SELECT id FROM order_details WHERE user_id = ? ORDER BY id DESC LIMIT 1");
+        $statement->execute([$order->userId]);
+        try {
+            if ($row = $statement->fetch()) {
+                $order->orderId = $row['id'];
+            }
+        } finally {
+            $statement->closeCursor();
+        }
+        $statement = $this->connection->prepare("SELECT balance FROM users WHERE id = ?");
+        $statement->execute([$order->userId]);
+        try {
+            if ($row = $statement->fetch()) {
+                $user = new User();
+                $user->balance = $row['balance'];
+            }
+        } finally {
+            $statement->closeCursor();
+        }
+        if ($user->balance > $order->amount) {
+            $statement = $this->connection->prepare("INSERT INTO payment_details(order_id,amount) VALUES(?,?)");
+            if ($statement->execute([$order->orderId, $order->amount]) == true) {
+                $user->balance -= $order->amount;
+                $statement = $this->connection->prepare("UPDATE users SET balance = ? WHERE id = ?");
+                $statement->execute([$user->balance, $order->userId]);
+                $statement = $this->connection->prepare("SELECT stock FROM products WHERE id = ?");
+                $statement->execute([$order->productId]);
+                try {
+                    if ($row = $statement->fetch()) {
+                        $product = new Product();
+                        $product->stock = $row['stock'];
+                        $product->stock -= $order->total;
+                    }
+                } finally {
+                    $statement->closeCursor();
+                }
+                $statement = $this->connection->prepare("UPDATE products SET stock = ? WHERE id = ?");
+                $statement->execute([$product->stock, $order->productId]);
+                $statement = $this->connection->prepare("UPDATE payment_details SET status = ? WHERE order_id = ?");
+                $statement->execute(['success', $order->orderId]);
+                $statement = $this->connection->prepare("SELECT id FROM payment_details WHERE order_id = ?");
+                $statement->execute([$order->orderId]);
+                try {
+                    if ($row = $statement->fetch()) {
+                        $order->paymentId = $row['id'];
+                    }
+                } finally {
+                    $statement->closeCursor();
+                }
+                $statement = $this->connection->prepare("UPDATE order_details SET payment_id = ? WHERE user_id = ?");
+                $statement->execute([$order->paymentId, $order->userId]);
+                $statement = $this->connection->prepare("INSERT INTO order_items(order_id,product_id) VALUES(?,?)");
+                $statement->execute([$order->orderId, $order->productId]);
+                return $order;
+            } else {
+                $statement = $this->connection->prepare("UPDATE payment_details SET status = ? WHERE order_id = ?");
+                $statement->execute(['failed', $order->orderId]);
+                $statement = $this->connection->prepare("UPDATE order_details SET payment_id = ? WHERE user_id = ?");
+                $statement->execute([$order->paymentId, $order->userId]);
+                $statement = $this->connection->prepare("INSERT INTO order_items(order_id,product_id) VALUES(?,?)");
+                $statement->execute([$order->orderId, $order->productId]);
+                return $order;
+            }
         }
     }
 }

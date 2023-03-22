@@ -1,84 +1,115 @@
-    <nav>
-        <div class="logo">
-            <a href="/toko_online/public/" class="fab fa-apple a"> <?= $model['logo'] ?? '' ?></a>
-        </div>
-        <ul class="nav-menu">
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPhone'; ?>">iPhone</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPad'; ?>">iPad</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Mac'; ?>">Mac</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Watch'; ?>">Watch</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/listProduct?category=<?= $category = 'Tv'; ?>">Tv</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>">Cart</a></li>
-        </ul>
-        <div class="hamburger">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-    </nav>
-    <br>
-    <a href="#" class="directory">Home/ Login</a>
-    <br>
-    <br>
-    <hr>
-    <p class="alert-login"><?= $model['error'] ?? '' ?></p>
-    <div class="register-logo">
-        <h4 class="fab fa-apple"> Register</h4>
-    </div>
-    <form action="/toko_online/public/users/register" method="post">
-        <div class="form-register1">
-            <div class="input-group">
-                <label for="username" class="register-label">Username</label>
-                <input type="text" name="username" class="register-input" placeholder="username" id="username" value="<?= $_POST['username'] ?? '' ?>" />
-            </div>
-            <div class="input-group">
-                <label for="firstname" class="register-label">Firstname</label>
-                <input type="text" name="firstname" class="register-input" placeholder="firstname" id="firstname" value="<?= $_POST['firstname'] ?? '' ?>" />
-            </div>
-            <div class="input-group">
-                <label for="lastname" class="register-label">Lastname</label>
-                <input type="text" name="lastname" class="register-input" placeholder="lastname" value="<?= $_POST['lastname'] ?? '' ?>" />
-            </div>
-            <div class="input-group">
-                <label for="email" class="register-label">E-mail</label>
-                <input type="text" name="email" class="register-input" placeholder="email" value="<?= $_POST['email'] ?? '' ?>" />
-            </div>
-            <div class="input-group">
-                <label for="password" class="register-label">Password</label>
-                <input type="password" name="password" class="register-input" placeholder="password" />
-            </div>
-            <div class="input-group">
-                <label for="dateOfBirth" class="register-label">Date of Birth</label>
-                <input type="date" name="dateOfBirth" class="register-input" placeholder="date of birth" value="<?= $_POST['dateOfBirth'] ?? '' ?>" />
-            </div>
-            <button class="register-button">Register</button>
-        </div>
-        <div class="form-register2">
-            <div class="input-group">
-                <label for="gender" class="register-label">Gender</label>
-                <select name="gender" id="gender">
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="phoneNumber" class="register-label">Phone Number</label>
-                <input type="text" name="phoneNumber" class="register-input" placeholder="phonenumber" id="phoneNumber" value="<?= $_POST['phoneNumber'] ?? '' ?>" />
-            </div>
-            <div class="input-group">
-                <label for="jobs" class="register-label">Jobs</label>
-                <input type="text" name="jobs" class="register-input" placeholder="jobs" id="jobs" value="<?= $_POST['jobs'] ?? '' ?>" />
-            </div>
-            <div class="input-group">
-                <label class="register-label">Address</label>
-                <textarea id="address" type="text" name="address" class="register-input-textarea">
-                </textarea>
-            </div>
-        </div>
-    </form>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid m-3">
+        <a class="navbar-brand fab fa-apple ms-3 me-5" href="/toko_online/public/" style="letter-spacing: 0.2rem;"><?= $model['logo'] ?? '' ?></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto gap-5">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPhone'; ?>">iPhone</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'iPad'; ?>">iPad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'Mac'; ?>">Mac</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'Watch'; ?>">Watch</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'Tv'; ?>">Tv</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#">About</a>
+                </li>
 
-    <div class="login-link">
-        <p>Have any account?</p>
+                <li class="nav-item">
+                    <a class="nav-link fa-solid fa-cart-shopping mt-1" aria-current="page" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>"></a>
+                </li>
+
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control form-control-sm me-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+            <ul class="navbar-nav ms-5 me-5">
+                <?php
+                if ($model['logout'] == null) {
+                ?>
+                    <li class="nav-item me-2 dropdown">
+                        <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/toko_online/public/users/login">Login</a></li>
+                            <li><a class="dropdown-item" href="/toko_online/public/users/register">Register</a></li>
+                        </ul>
+                    </li>
+                <?php
+                }
+                ?>
+            </ul>
+        </div>
     </div>
-    <a href="/toko_online/public/users/login" class="login-link-redirect"> Login!</a>
+</nav>
+<div class="alert alert-danger text-center" role="alert">
+    A simple primary alert—check it out!
+</div>
+<form action="" method="post">
+    <div class="container-fluid overflow-auto position-form-register mt-4 row">
+        <div class="mb-3 col-6">
+            <label for="exampleFormControlInput1" class="form-label">Username</label>
+            <input type="username" name="username" class="form-control" id="exampleFormControlInput1" placeholder="username">
+        </div>
+        <div class="mb-3 col-6">
+            <label for="exampleFormControlInput1" class="form-label">Firstname</label>
+            <input type="firstname" name="firstname" class="form-control" id="exampleFormControlInput1" placeholder="firstname">
+        </div>
+        <div class="mb-3 col-6">
+            <label for="exampleFormControlInput1" class="form-label">Lastname</label>
+            <input type="lastname" name="lastname" class="form-control" id="exampleFormControlInput1" placeholder="lastname">
+        </div>
+        <div class="mb-3 col-6">
+            <label for="exampleFormControlInput1" class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="email@example.com">
+        </div>
+        <div class="mb-3 col-6">
+            <label for="exampleFormControlInput1" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" id="exampleFormControlInput1" placeholder="password">
+        </div>
+        <div class="mb-3 col-6">
+            <label for="exampleFormControlInput1" class="form-label">Date of Birth</label>
+            <input type="date" name="dateOfBirth" class="form-control" id="exampleFormControlInput1">
+        </div>
+        <div class="mb-3 col-6">
+            <label for="gender" class="mb-2">Gender</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="gender" id="flexRadioDefault1" value="Male" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    Male
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="gender" id="flexRadioDefault2" value="Female">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Female
+                </label>
+            </div>
+        </div>
+        <div class="mb-3 col-6">
+            <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
+            <input type="phoneNumber" name="phoneNumber" class="form-control" id="exampleFormControlInput1" placeholder="08xxxxxxxxxxx">
+        </div>
+        <div class="mb-3 col-6">
+            <label for="exampleFormControlInput1" class="form-label">Jobs</label>
+            <input type="jobs" name="jobs" class="form-control" id="exampleFormControlInput1" placeholder="jobs">
+        </div>
+        <div class="mb-3 col-6">
+            <label for="exampleFormControlTextarea1" class="form-label">Address</label>
+            <textarea class="form-control" name="address" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary position-button-register">Register</button>
+
+</form>
+<span class="fab fa-apple position-login-logo" style="letter-spacing: 0.5rem; font-size:5rem">REGISTER</span>

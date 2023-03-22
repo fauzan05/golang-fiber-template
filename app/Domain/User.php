@@ -17,6 +17,7 @@ class User
     public string $image;
     public string $password;
     public string $status;
+    public string $balance;
     public string $created_at;
 }
 
