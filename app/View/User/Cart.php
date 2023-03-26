@@ -60,6 +60,15 @@
     </div>
   </div>
 </nav>
+<?php
+if ($model['error'] != null) :
+?>
+    <div class="alert alert-danger text-center" role="alert">
+        <?= $model['error'] ?? '' ?>
+    </div>
+<?php
+endif;
+?>
 <h2 class="text-center py-5">Your Cart</h2>
 <div class="row mb-5" style="display:flex; justify-content:center;">
   <?php
@@ -72,7 +81,7 @@
       <div class="row">
         <img src="http://localhost/toko_online/public/assets/images/products/<?= $product->image ?>" class="col-lg-3 col-md-3 mt-5 ms-3" alt="product-image" style="height: 120px;">
         <div class="container-fluid col-lg-3 col-md-3 m-4">
-          <h2 class=""><?= $product->name ?></h2>
+          <h2 class="fw-light"><?= $product->name ?></h2>
           <p class="">Price : <?= $product->price ?></p>
           <p class="">Quantity : <?= $cart->quantity ?></p>
           <p class="">Shopping Id : <?= $cart->sessionId ?></p>

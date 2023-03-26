@@ -32,6 +32,7 @@ Router::add('GET', '/users/checkoutStatus', UserController::class, 'checkoutStat
 Router::add('GET', '/users/cart', UserController::class, 'cart',[MustLoginMiddleware::class]);
 Router::add('GET', '/users/deleteCart', UserController::class, 'deleteCart',[MustLoginMiddleware::class]);
 Router::add('GET', '/users/transaction', UserController::class, 'transaction',[MustLoginMiddleware::class]);
+Router::add('GET', '/users/orderHistory', UserController::class, 'orderHistory',[MustLoginMiddleware::class]);
 //admin controller
 Router::add('GET', '/admin/login', AdminController::class, 'login', [MustNotLoginMiddleware::class]);
 Router::add('POST', '/admin/login', AdminController::class, 'postLogin', [MustNotLoginMiddleware::class]);

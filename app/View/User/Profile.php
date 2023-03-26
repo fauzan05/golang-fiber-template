@@ -50,7 +50,7 @@
           <li class="nav-item me-2 dropdown">
             <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/toko_online/public/users/profile">Profile</a></li>
+              <li><a class="dropdown-item" href="/toko_online/public/users/dashboard">Profile</a></li>
               <li><a class="dropdown-item" href="/toko_online/public/users/logout">Logout</a></li>
             </ul>
           </li>
@@ -99,7 +99,7 @@
       <hr>
       <a class="col-12" href="/toko_online/public/users/updateProfile" style="text-decoration: none; color:black;">Account Information</a>
       <hr>
-      <a class="col-12 " href="" style="text-decoration: none; color:black;">Orders History</a>
+      <a class="col-12 " href="/toko_online/public/users/orderHistory" style="text-decoration: none; color:black;">Orders History</a>
       <hr>
       <a class="col-12 " href="" style="text-decoration: none; color:black;">Track Orders</a>
       <hr>

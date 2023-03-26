@@ -31,6 +31,7 @@ use Fauzannurhidayat\Php\TokoOnline\Model\UserProfileUpdateResponse;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserRegisterRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserRegisterResponse;
 use Fauzannurhidayat\Php\TokoOnline\Repository\UserRepository;
+use PhpParser\Node\Expr\Isset_;
 
 class UserService
 {
@@ -370,12 +371,16 @@ class UserService
     }
     public function addToCart(AddToCartRequest $request):AddToCartResponse
     {
+        $this->validateAddToCartRequest($request);
+        if($request->quantity <= 0){
+            throw new ValidationException('Quantity is not lower than 0');
+        }
         try {
             Database::beginTransaction();
             $cart = new Cart();
             $cart->id = $request->id;
             $cart->userId = $request->userId;
-            $cart->total = $request->total;
+            $cart->total = $request->price * $request->quantity;
             $cart->productId = $request->productId;
             $cart->quantity = $request->quantity;
             $this->userRepository->saveToCart($cart);
@@ -388,14 +393,27 @@ class UserService
             throw $exception;
         }
     }
+    private function validateAddToCartRequest(AddToCartRequest $addToCartRequest)
+    {
+        if(
+            $addToCartRequest->quantity == null || trim($addToCartRequest->quantity) == ""
+        ){
+            throw new ValidationException('Quantity form is doesnt empty');
+        }
+    }
     public function transaction(BuyNowRequest $request):BuyNowResponse
     {
+        $this->validateTransactionRequest($request);
+        if($request->total <= 0)
+        {
+            throw new ValidationException('Quantity is not lower than 0');
+        }
         try{
             Database::beginTransaction();
             $buyNow = new Order();
             $buyNow->userId = $request->userId;
             $buyNow->total = $request->total;
-            $buyNow->amount = $request->amount;
+            $buyNow->amount = $request->price * $buyNow->total;
             $buyNow->productId = $request->productId;
             $this->userRepository->buyNow($buyNow);
             $response = new BuyNowResponse();
@@ -407,6 +425,13 @@ class UserService
         {
             Database::rollbackTransaction();
             throw $exception;
+        }
+    }
+    private function validateTransactionRequest(BuyNowRequest $request)
+    {
+        if($request->total == null || trim($request->total) == "" || empty($request->total))
+        {
+            throw new ValidationException('Quantity form is doesnt empty');
         }
     }
 }

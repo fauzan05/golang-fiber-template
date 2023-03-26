@@ -27,15 +27,9 @@
                 <li class="nav-item">
                     <a class="nav-link fa-solid fa-cart-shopping mt-1" aria-current="page" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>"></a>
                 </li>
-                <?php
-                if ($model['logout'] != null) {
-                ?>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>">Cart</a>
-                    </li>
-                <?php
-                }
-                ?>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>">Cart</a>
+                </li>
             </ul>
             <form class="d-flex" role="search">
                 <input class="form-control form-control-sm me-2" type="text" placeholder="Search" aria-label="Search">

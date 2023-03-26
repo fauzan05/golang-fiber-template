@@ -11,5 +11,6 @@ class BuyNowRequest
     public ?string $orderId = null;
     public ?string $amount = null;
     public ?string $status = null;
+    public ?string $price = null;
     public ?string $productId = null;
 }

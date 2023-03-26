@@ -4,6 +4,7 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller;
 
 use Fauzannurhidayat\Php\TokoOnline\App\View;
 use Fauzannurhidayat\Php\TokoOnline\Config\Database;
+use Fauzannurhidayat\Php\TokoOnline\Domain\User;
 use Fauzannurhidayat\Php\TokoOnline\Exception\ValidationException;
 use Fauzannurhidayat\Php\TokoOnline\Model\AddToCartRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\BuyNowRequest;
@@ -89,8 +90,11 @@ class UserController
                 'error' => 'Username or password is wrong'
             ]);
         } catch (ValidationException $exception) {
+            // var_dump($exception);
+            // die;
             View::Render('User/Login', [
                 'title' => 'Login User',
+                'logo' => 'iStore',
                 'error' => $exception->getMessage()
             ]);
         }
@@ -199,7 +203,7 @@ class UserController
             'title' => 'Update User Password',
             'logo' => 'iStore',
             'userExist' => $user,
-            'username' => $user->username 
+            'username' => $user->username
         ]);
     }
     public function postUpdatePassword()
@@ -221,8 +225,8 @@ class UserController
                 [
                     'title' => 'Update User Password',
                     'error' => $exception->getMessage(),
-                        'username' => $user->username,
-                    
+                    'username' => $user->username,
+
                 ]
             );
         }
@@ -254,7 +258,7 @@ class UserController
     {
         $user = $this->sessionService->current();
         $cartsArray = $this->userRepository->showAllCart($user->id);
-        
+
         View::Render(
             'User/Cart',
             [
@@ -271,73 +275,111 @@ class UserController
         $this->sessionService->current();
         View::Render('User/Delete', []);
         $id = trim($_GET['id']);
-        if(isset($id))
-        {
+        if (isset($id)) {
             $this->userRepository->deleteCartById($id);
             View::Redirect('/toko_online/public/users/cart');
         }
-        
     }
     public function productDetail()
     {
         $user = $this->sessionService->current();
-        $product = $this->userRepository->findProductsById($_GET['id']);
-        View::Render(
-            'User/ProductDetail',
-            [
-                'title' => 'iStore',
-                'logo' => 'iStore',
-                'username' => $user->username,
-                'productId' => $product->id,
-                'productName' => $product->name,
-                'productStock' => $product->stock,
-                'productColor' => $product->color,
-                'productCapacity' => $product->capacity,
-                'productPrice' => $product->price,
-                'productImage' => $product->image,
-                'productDescription' => $product->description
-            ]
-        );
+        if (isset($_GET['id'])) {
+            $product = $this->userRepository->findProductsById($_GET['id']);
+            View::Render(
+                'User/ProductDetail',
+                [
+                    'title' => 'iStore',
+                    'logo' => 'iStore',
+                    'username' => $user->username,
+                    'productId' => $product->id,
+                    'productName' => $product->name,
+                    'productStock' => $product->stock,
+                    'productColor' => $product->color,
+                    'productCapacity' => $product->capacity,
+                    'productPrice' => $product->price,
+                    'productImage' => $product->image,
+                    'productDescription' => $product->description
+                ]
+            );
+        } else {
+            View::Render(
+                'User/ProductDetail',
+                [
+                    'title' => 'iStore',
+                    'logo' => 'iStore',
+                    'username' => $user->username,
+                ]
+            );
+        }
     }
     public function postProductDetail()
     {
         $user = $this->sessionService->current();
+        $productId = $_POST['id'];
+        $price = intval($_POST['price']);
+        $quantity = $_POST['quantity'];
         if ($_POST['addToCart'] == 'true') {
-            $price = intval($_POST['price']);
-            $quantity = intval($_POST['quantity']);
             $request = new AddToCartRequest();
             $request->id = null;
-            $request->userId = $user->id;
-            $request->total =  $price * $quantity;
-            $request->productId = $_POST['id'];
             $request->quantity = $quantity;
-
+            $request->userId = $user->id;
+            $request->price = $price;
+            $request->productId = $productId;
             try {
                 $this->userService->addToCart($request);
                 //redirect to cart
                 View::Redirect('/toko_online/public/users/cart');
             } catch (ValidationException $exception) {
+                $product = $this->userRepository->findProductsById($productId);
                 View::Render(
                     'User/ProductDetail',
                     [
                         'error' => $exception->getMessage(),
                         'title' => 'iStore',
                         'logo' => 'iStore',
-                        'username' => $user->username
+                        'username' => $user->username,
+                        'productId' => $product->id,
+                        'productName' => $product->name,
+                        'productStock' => $product->stock,
+                        'productColor' => $product->color,
+                        'productCapacity' => $product->capacity,
+                        'productPrice' => $product->price,
+                        'productImage' => $product->image,
+                        'productDescription' => $product->description
                     ]
                 );
             }
         } else if (isset($_POST['buyNow']) == 'true') {
             // var_dump($_POST);
             // die;
-            $price = intval($_POST['price']);
             $request = new BuyNowRequest();
+            $request->price = intval($_POST['price']);
             $request->userId = $user->id;
             $request->total = intval($_POST['quantity']);
-            $request->amount = intval($price * $request->total);
             $request->productId = $_POST['id'];
-            $this->userService->transaction($request);
-            View::Redirect('/toko_online/public/users/checkoutStatus');
+            try {
+                $this->userService->transaction($request);
+                View::Redirect('/toko_online/public/users/checkoutStatus');
+            } catch (ValidationException $exception) {
+                $product = $this->userRepository->findProductsById($productId);
+                View::Render(
+                    'User/ProductDetail',
+                    [
+                        'error' => $exception->getMessage(),
+                        'title' => 'iStore',
+                        'logo' => 'iStore',
+                        'username' => $user->username,
+                        'productId' => $product->id,
+                        'productName' => $product->name,
+                        'productStock' => $product->stock,
+                        'productColor' => $product->color,
+                        'productCapacity' => $product->capacity,
+                        'productPrice' => $product->price,
+                        'productImage' => $product->image,
+                        'productDescription' => $product->description
+                    ]
+                );
+            }
         }
     }
     public function checkoutStatus()
@@ -363,6 +405,21 @@ class UserController
                 'logo' => 'iStore',
                 'username' => $user->username,
                 'userExist' => $user,
+            ]
+        );
+    }
+    public function orderHistory()
+    {
+        $user = $this->sessionService->current();
+        $order = $this->userRepository->showAllTransaction($user->id);
+        View::Render(
+            'User/OrderHistory',
+            [
+                'title' => 'iStore',
+                'logo' => 'iStore',
+                'username' => $user->username,
+                'userExist' => $user,
+                'showAllOrder' => $order
             ]
         );
     }

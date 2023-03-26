@@ -24,8 +24,9 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="#">About</a>
         </li>
+
         <li class="nav-item">
-          <a class="nav-link fa-solid fa-cart-shopping mt-1" aria-current="page" href="/toko_online/public/users/cart"></a>
+          <a class="nav-link fa-solid fa-cart-shopping mt-1" aria-current="page" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>"></a>
         </li>
       </ul>
       <form class="d-flex" role="search">
@@ -60,42 +61,53 @@
     </div>
   </div>
 </nav>
-<?php
-if ($model['error'] != null) :
-?>
-    <div class="alert alert-danger text-center" role="alert">
-        <?= $model['error'] ?? '' ?>
-    </div>
-<?php
-endif;
-?>
-<div class="container-fluid">
-  <div class="container">
-    <h2 class="text-center py-5">Our Products</h2>
-    <div class="row gap-0 row-gap-4">
+<div class="row">
+  <div class="container-fluid col-7 my-4" style="border: 1px solid grey; height:80vh; position:absolute; right:10%">
+    <h1 class="m-3">Total : <?= $model['username'] ?> Transaction</h1>
+    <hr>
+    <div class="overflow-auto" style="height: 480px;">
       <?php
-      $no = 1;
-      if (isset($model['showAllProduct'])) {
-        $products = $model['showAllProduct'];
-        foreach ($products as $product) :
+      $allOrder = $model['showAllOrder'];
+      foreach ($allOrder as $order) :
       ?>
-
-          <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="card">
-              <img src="http://localhost/toko_online/public/assets/images/products/<?= $product->image ?>" class="card-img-top col-md-6 mx-auto mt-4" alt="product" style="width: 200px;">
-              <div class="card-body">
-                <h5 class="card-title"><?= $product->name ?></h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="/toko_online/public/users/productDetail?id=<?= $product->id ?? ''?>" class="btn btn-primary">Go somewhere</a>
+        <div class="row m-4 grid gap-0 row-gap-3">
+          <div class="col-lg-12" style="border: 1px solid grey; height:20vh">
+            <div class="row">
+              <img class="col-3 m-1" src="" alt="product-image">
+              <div class="col-3 m-1">
+                <h2 class="fw-light"><?= $order->name ?></h2>
+                <p><?= $order->total?> Item x <?= $order->price ?> IDR</p>
+                <p>Total : <?= $order->amount ?> </p>
               </div>
             </div>
           </div>
-
+        </div>
       <?php
-          $no++;
-        endforeach;
-      }
+      endforeach;
       ?>
     </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="container-fluid col-2 my-4" style=" height:auto; position:absolute; left:5%">
+    <div class="row">
+      <a class="col-12 mt-3" href="http://localhost/toko_online/public/users/dashboard" style="text-decoration: none; color:black;">Dashboard</a>
+      <hr>
+      <a class="col-12" href="/toko_online/public/users/updateProfile" style="text-decoration: none; color:black;">Account Information</a>
+      <hr>
+      <a class="col-12 fw-bolder" href="/toko_online/public/users/orderHistory" style="text-decoration: none; color:black;">Orders History</a>
+      <hr>
+      <a class="col-12 " href="" style="text-decoration: none; color:black;">Track Orders</a>
+      <hr>
+      <a class="col-12 " href="" style="text-decoration: none; color:black;">Favourite</a>
+      <hr>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!-- <p><?= $order->name ?></p> -->

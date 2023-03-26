@@ -358,7 +358,7 @@ class UserRepository
         products.price, cart_item.id as cart_item_id, cart_item.quantity, cart_item.created_at, shopping_session.user_id, cart_item.session_id from products 
         INNER JOIN cart_item ON cart_item.product_id = products.id
         INNER JOIN shopping_session ON shopping_session.id = cart_item.session_id
-        WHERE shopping_session.user_id = ?
+        WHERE shopping_session.user_id = ? ORDER BY id DESC
         ");
         $statement->execute([$id]);
         try {
@@ -385,7 +385,7 @@ class UserRepository
                     ];
                 }
                 return $array;
-            }else if ($statement->rowCount() < 1) {
+            } else if ($statement->rowCount() < 1) {
                 return null;
             }
         } finally {
@@ -423,7 +423,7 @@ class UserRepository
         } finally {
             $statement->closeCursor();
         }
-        if ($user->balance > $order->amount) {
+        if ($user->balance >= $order->amount) {
             $statement = $this->connection->prepare("INSERT INTO payment_details(order_id,amount) VALUES(?,?)");
             if ($statement->execute([$order->orderId, $order->amount]) == true) {
                 $user->balance -= $order->amount;
@@ -453,8 +453,8 @@ class UserRepository
                 } finally {
                     $statement->closeCursor();
                 }
-                $statement = $this->connection->prepare("UPDATE order_details SET payment_id = ? WHERE user_id = ?");
-                $statement->execute([$order->paymentId, $order->userId]);
+                $statement = $this->connection->prepare("UPDATE order_details SET payment_id = ? WHERE id = ?");
+                $statement->execute([$order->paymentId, $order->orderId]);
                 $statement = $this->connection->prepare("INSERT INTO order_items(order_id,product_id) VALUES(?,?)");
                 $statement->execute([$order->orderId, $order->productId]);
                 return $order;
@@ -467,6 +467,64 @@ class UserRepository
                 $statement->execute([$order->orderId, $order->productId]);
                 return $order;
             }
+        }
+    }
+    public function countAllTransaction()
+    {
+        $statement = $this->connection->prepare("SELECT COUNT(*) FROM order_details");
+        $statement->execute();
+        try {
+            if ($row = $statement->fetchColumn()) {
+                $total = $row;
+                return $total;
+            } else {
+                return null;
+            }
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+    public function showAllTransaction($id): ?array
+    {
+        $statement = $this->connection->prepare("
+        SELECT order_details.id as order_id, order_details.user_id,order_details.payment_id,
+        order_details.total as quantity, payment_details.amount, payment_details.created_at as payment_date,
+        order_details.created_at as order_date,order_items.product_id,products.name, products.category, products.image,
+        payment_details.status, products.price FROM products
+        INNER JOIN order_items ON order_items.product_id = products.id
+        INNER JOIN order_details ON order_details.id = order_items.order_id
+        INNER JOIN payment_details ON payment_details.id = order_details.payment_id
+        WHERE order_details.user_id = ? ORDER BY order_details.id DESC;
+        ");
+        $statement->execute([$id]);
+        try {
+            $array = [];
+            if ($statement->rowCount() > 0) {
+                $rows = $statement->fetchAll();
+                foreach ($rows as $row) {
+                    $order = new Order();
+                    $order->name = $row['name'];
+                    $order->orderId = $row['order_id'];
+                    $order->paymentId = $row['payment_id'];
+                    $order->amount = $row['amount'];
+                    $order->userId = $row['user_id'];
+                    $order->total = $row['quantity'];
+                    $order->productId = $row['product_id'];
+                    $order->productName = $row['name'];
+                    $order->category = $row['category'];
+                    $order->status = $row['status'];
+                    $order->image = $row['image'];
+                    $order->price = $row['price'];
+                    $order->created_at_payment = $row['payment_date'];
+                    $order->created_at_order = $row['order_date'];
+                    array_push($array, $order);
+                }
+                return $array;
+            } else if ($statement->rowCount() < 1) {
+                return null;
+            }
+        } finally {
+            $statement->closeCursor();
         }
     }
 }
