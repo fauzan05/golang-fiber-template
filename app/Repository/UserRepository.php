@@ -358,7 +358,7 @@ class UserRepository
         products.price, cart_item.id as cart_item_id, cart_item.quantity, cart_item.created_at, shopping_session.user_id, cart_item.session_id from products 
         INNER JOIN cart_item ON cart_item.product_id = products.id
         INNER JOIN shopping_session ON shopping_session.id = cart_item.session_id
-        WHERE shopping_session.user_id = ? ORDER BY id DESC
+        WHERE shopping_session.user_id = ? ORDER BY id ASC
         ");
         $statement->execute([$id]);
         try {
@@ -399,6 +399,23 @@ class UserRepository
         $statement = $this->connection->prepare("DELETE FROM shopping_session WHERE id = ?");
         $statement->execute([$id]);
         $statement->closeCursor();
+    }
+    public function checkUserBalance($id):?User
+    {
+        $statement = $this->connection->prepare("SELECT balance FROM users WHERE id = ?");
+        $statement->execute([$id]);
+        try{
+            if($statement->rowCount() > 0){
+                $row = $statement->fetch();
+                $user = new User();
+                $user->balance = $row['balance'];
+                return $user;
+            }else{
+                return null;
+            }
+        }finally{
+            $statement->closeCursor();
+        }
     }
     public function buyNow(Order $order): ?Order
     {
@@ -487,14 +504,18 @@ class UserRepository
     public function showAllTransaction($id): ?array
     {
         $statement = $this->connection->prepare("
-        SELECT order_details.id as order_id, order_details.user_id,order_details.payment_id,
-        order_details.total as quantity, payment_details.amount, payment_details.created_at as payment_date,
-        order_details.created_at as order_date,order_items.product_id,products.name, products.category, products.image,
-        payment_details.status, products.price FROM products
+        SELECT order_details.id as order_id, order_details.user_id, order_details.payment_id,
+        order_details.total as quantity, payment_details.amount,
+        DATE_FORMAT(payment_details.created_at, '%d, %M %Y') as payment_date,
+        DATE_FORMAT(order_details.created_at, '%d, %M %Y') as order_date,
+        order_items.product_id, products.name, products.category, products.image,
+        payment_details.status, products.price 
+        FROM products
         INNER JOIN order_items ON order_items.product_id = products.id
         INNER JOIN order_details ON order_details.id = order_items.order_id
         INNER JOIN payment_details ON payment_details.id = order_details.payment_id
-        WHERE order_details.user_id = ? ORDER BY order_details.id DESC;
+        WHERE order_details.user_id = ? 
+        ORDER BY order_details.id DESC;
         ");
         $statement->execute([$id]);
         try {

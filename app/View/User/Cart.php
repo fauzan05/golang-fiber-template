@@ -77,7 +77,7 @@ endif;
     $product = $cartArray['product'];
     $cart = $cartArray['cart'];
   ?>
-    <div class="container-fluid col-lg-6 col-md-6 m-3" style="border: 1px solid grey;height: 200px;">
+    <div class="container-fluid col-lg-6 col-md-6 m-3 shadoww" style="border: 1px solid #dee2e6;height: 200px;">
       <div class="row">
         <img src="http://localhost/toko_online/public/assets/images/products/<?= $product->image ?>" class="col-lg-3 col-md-3 mt-5 ms-3" alt="product-image" style="height: 120px;">
         <div class="container-fluid col-lg-3 col-md-3 m-4">

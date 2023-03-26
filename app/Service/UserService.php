@@ -32,6 +32,8 @@ use Fauzannurhidayat\Php\TokoOnline\Model\UserRegisterRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserRegisterResponse;
 use Fauzannurhidayat\Php\TokoOnline\Repository\UserRepository;
 use PhpParser\Node\Expr\Isset_;
+use PHPUnit\Util\Xml\ValidationResult;
+use PHPUnit\Util\Xml\Validator;
 
 class UserService
 {
@@ -407,6 +409,10 @@ class UserService
         if($request->total <= 0)
         {
             throw new ValidationException('Quantity is not lower than 0');
+        }
+        if($request->balanceUser < $request->total * $request->price)
+        {
+            throw new ValidationException('Your balance isnt enough');
         }
         try{
             Database::beginTransaction();

@@ -62,7 +62,7 @@
   </div>
 </nav>
 <div class="row">
-  <div class="container-fluid col-7 my-4" style="border: 1px solid grey; height:80vh; position:absolute; right:10%">
+  <div class="container-fluid col-7 my-4" style="border: 1px solid #dee2e6; height:80vh; position:absolute; right:10%">
     <h1 class="m-3">Total : <?= $model['username'] ?> Transaction</h1>
     <hr>
     <div class="overflow-auto" style="height: 480px;">
@@ -71,13 +71,19 @@
       foreach ($allOrder as $order) :
       ?>
         <div class="row m-4 grid gap-0 row-gap-3">
-          <div class="col-lg-12" style="border: 1px solid grey; height:20vh">
-            <div class="row">
-              <img class="col-3 m-1" src="" alt="product-image">
-              <div class="col-3 m-1">
+          <div class="col-lg-12" style="border: 1px solid #dee2e6; height:20vh">
+            <div class="row m-1">
+              <div class="col-lg-3" style="align-items:center; display:flex; justify-content:center;">
+              <img src="http://localhost/toko_online/public/assets/images/products/<?= $order->image ?>" alt="product-image" style="width:100px; height:100px; object-fit:contain;">
+              </div>
+              <div class="col-lg-3 m-1">
                 <h2 class="fw-light"><?= $order->name ?></h2>
                 <p><?= $order->total?> Item x <?= $order->price ?> IDR</p>
                 <p>Total : <?= $order->amount ?> </p>
+              </div>
+              <div class="col-lg-5 m-1">
+                <p>Shopping Date : <?= $order->created_at_order?></p>
+                <button type="button" class="btn btn-outline-success" disabled><?= $order->status?></button>              
               </div>
             </div>
           </div>

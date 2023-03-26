@@ -108,6 +108,7 @@ class UserController
     {
         $session = $this->sessionService->current();
         $user = $this->userRepository->findByUsername($session->username);
+        $transaction = $this->userRepository->countAllTransaction();
         View::Render(
             'User/Profile',
             [
@@ -126,7 +127,8 @@ class UserController
                 'dateOfBirth' => $user->dateOfBirth,
                 'username' => $user->username,
                 'status' => $user->status,
-                'createdAt' => $user->created_at
+                'createdAt' => $user->created_at,
+                'countAllTransaction' => $transaction
             ]
         );
     }
@@ -350,9 +352,9 @@ class UserController
                 );
             }
         } else if (isset($_POST['buyNow']) == 'true') {
-            // var_dump($_POST);
-            // die;
+
             $request = new BuyNowRequest();
+            $request->balanceUser = $this->userRepository->checkUserBalance($user->id)->balance;   
             $request->price = intval($_POST['price']);
             $request->userId = $user->id;
             $request->total = intval($_POST['quantity']);
@@ -385,6 +387,7 @@ class UserController
     public function checkoutStatus()
     {
         $user = $this->sessionService->current();
+
         View::Render(
             'User/CheckoutStatus',
             [

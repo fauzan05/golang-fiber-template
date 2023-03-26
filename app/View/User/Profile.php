@@ -62,7 +62,7 @@
   </div>
 </nav>
 <div class="row">
-  <div class="container-fluid col-7 my-4" style="border: 1px solid grey; height:auto; position:absolute; right:10%">
+  <div class="container-fluid col-7 my-4" style="border: 1px solid #dee2e6; height:auto; position:absolute; right:10%">
     <h1 class="m-3">Welcome, <?= $model['username'] ?></h1>
     <hr>
     <div class="row text-center">
@@ -71,19 +71,20 @@
     </div>
     <hr>
     <div class="row gap-0 row-gap-5 mb-5">
-      <div class="container-fluid col-5 text-center" style="border: 1px solid grey; height:150px;">
+      <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
         <p class="fw-light mt-2">Order</p>
         <hr>
+        <h2><?= $model['countAllTransaction']?></h2>
       </div>
-      <div class="container-fluid col-5 text-center" style="border: 1px solid grey; height:150px;">
+      <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
         <p class="fw-light mt-2">Product Review</p>
         <hr>
       </div>
-      <div class="container-fluid col-5 text-center" style="border: 1px solid grey; height:150px;">
+      <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
         <p class="fw-light mt-2">Address</p>
         <hr>
       </div>
-      <div class="container-fluid col-5 text-center" style="border: 1px solid grey; height:150px;">
+      <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
         <p class="fw-light mt-2">Point</p>
         <hr>
       </div>

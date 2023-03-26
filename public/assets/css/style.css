@@ -1,45 +1,9 @@
-.position-center {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* LOGIN USER */
-.position-form-login {
-    position: absolute;
-    display: flex;
-    left: 55%;
-    top: 40%;
-}
-
-.position-login-logo {
-    position: absolute;
-    display: flex;
-    left: 10%;
-    top: 45%;
-}
-
-/* REGISTER USER */
-.position-form-register {
-    position: absolute;
-    display: flexbox;
-    height: 60vh;
-    width: 500px;
-    right: 5%;
-}
-
-.position-button-register {
-    position: absolute;
-    display: flexbox;
-    bottom: 5%;
-    right: 18%;
-}
-
-/* PROFILE USER */
-.position-button-edit {
-    position: absolute;
-    display: flex;
-    left: 42%;
-    bottom: -12%;
-}
+.shadoww {
+    background-color: #fff;
+    border-radius: 5px;
+    transition: box-shadow 0.1s ease-in-out;
+  }
+  
+  .shadoww:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
