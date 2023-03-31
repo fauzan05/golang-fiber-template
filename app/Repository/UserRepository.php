@@ -167,11 +167,14 @@ class UserRepository
     public function deleteAll(): void
     {
         $this->connection->exec("DELETE FROM users");
-    }
-    public function deleteAllProduct(): void
-    {
         $this->connection->exec("DELETE FROM products");
+        $this->connection->exec("DELETE FROM cart_item");
+        $this->connection->exec("DELETE FROM order_details");
+        $this->connection->exec("DELETE FROM order_items");
+        $this->connection->exec("DELETE FROM payment_details");
+        $this->connection->exec("DELETE FROM shopping_session");
     }
+   
     public function findProductsById(string $id): ?Product
     {
         $statement = $this->connection->prepare("SELECT id, name, image, stock, color, capacity, description, category, price, created_at, modified_at FROM products WHERE id = ?");

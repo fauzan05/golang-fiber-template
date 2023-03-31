@@ -70,7 +70,7 @@
       $allOrder = $model['showAllOrder'];
       foreach ($allOrder as $order) :
       ?>
-        <div class="row m-4 grid gap-0 row-gap-3">
+        <div class="row m-4 grid gap-0 row-gap-3 shadoww">
           <div class="col-lg-12" style="border: 1px solid #dee2e6; height:20vh">
             <div class="row m-1">
               <div class="col-lg-3" style="align-items:center; display:flex; justify-content:center;">
@@ -116,4 +116,3 @@
 
 
 
-<!-- <p><?= $order->name ?></p> -->

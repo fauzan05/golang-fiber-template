@@ -14,10 +14,10 @@ class User
     public string $phoneNumber;
     public string $address;
     public string $jobs;
-    public string $image;
+    public ?string $image;
     public string $password;
     public string $status;
-    public string $balance;
+    public ?int $balance;
     public string $created_at;
 }
 

@@ -33,93 +33,129 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         {
             $this->userController->register();
             $this->expectOutputRegex("[Register]");
-            $this->expectOutputRegex("[Id]");
-            $this->expectOutputRegex("[Name]");
-            $this->expectOutputRegex("[Password]");
-            $this->expectOutputRegex("[Register New User]");
+            $this->expectOutputRegex("[Username]");
+            $this->expectOutputRegex("[Lastname]");
+            $this->expectOutputRegex("[Address]");
         }
         public function testPostRegisterSuccess()
         {
-            $_POST['username'] = "14";
-            $_POST['name'] = "Fauzan14";
-            $_POST['password'] = "yaya";
-
+            $_POST['username'] = "fauzan14";
+            $_POST['firstname'] = "fauzan";
+            $_POST['lastname'] = "nur hidayat";
+            $_POST['email'] = "fauzannurhidayat8@gmail.com";
+            $_POST['password'] = password_hash("fauzan123", PASSWORD_BCRYPT);
+            $_POST['gender'] = 'male';
+            $_POST['phoneNumber'] = '081335457601';
+            $_POST['address'] = 'jakarta timur';
+            $_POST['jobs'] = 'junior programmer';
+            $_POST['dateOfBirth'] = '2001-02-05';
             $this->userController->postRegister();
-            //$this->expectOutputString("");
+
             $this->expectOutputRegex('[Location: /toko_online/public/users/login]');
         }
         public function testPostRegisterFailed()
         {
-            $_POST['id'] = "";
-            $_POST['name'] = "Fauzan";
-            $_POST['password'] = "Gatau";
+            $_POST['username'] = "fauzan14";
+            $_POST['firstname'] = "fauzan";
+            $_POST['lastname'] = "nur hidayat";
+            $_POST['email'] = "fauzannurhidayat8@gmail.com";
+            $_POST['password'] = password_hash("fauzan123", PASSWORD_BCRYPT);
+            $_POST['gender'] = 'male';
+            $_POST['phoneNumber'] = '081335457601';
+            $_POST['address'] = 'jakarta timur';
+            $_POST['jobs'] = 'junior programmer';
+            $_POST['dateOfBirth'] = null; // showing an exception
 
             $this->userController->postRegister();
 
-            $this->expectOutputRegex("[Password cannot blank]");
+            $this->expectOutputRegex("[Either of these forms cannot be empty]");
         }
         public function testPostRegisterDuplicated()
         {
             $user = new User();
-            $user->username = "fauzan";
-            $user->password = "fauzan";
+            $user->id = '13';
+            $user->firstname = 'fauzan';
+            $user->lastname = 'nurhidayat';
+            $user->email = "fauzannurhidayat8@gmail.com";
+            $user->password = password_hash("fauzan123", PASSWORD_BCRYPT);
+            $user->gender = 'male';
+            $user->phoneNumber = '081335457601';
+            $user->address = 'jakarta timur';
+            $user->jobs = 'junior programmer';
+            $user->dateOfBirth = '2001-02-05';
+            $user->username = 'fauzan14';
+            $user->image = '';
+            $user->status = 'user';
 
             $this->userRepository->save($user);
 
-            $_POST['id'] = "fauzan";
-            $_POST['name'] = "fauzan";
-            $_POST['password'] = "fauzan";
+            $_POST['username'] = "fauzan14";
+            $_POST['firstname'] = "fauzan";
+            $_POST['lastname'] = "nurhidayat";
+            $_POST['email'] = "fauzannurhidayat8@gmail.com";
+            $_POST['password'] = password_hash("fauzan123", PASSWORD_BCRYPT);
+            $_POST['gender'] = 'male';
+            $_POST['phoneNumber'] = '081335457601';
+            $_POST['address'] = 'jakarta timur';
+            $_POST['jobs'] = 'junior programmer';
+            $_POST['dateOfBirth'] = '2001-02-05';
 
             $this->userController->postRegister();
-            $this->expectOutputRegex("[User already exist]");
-            //$this->expectOutputRegex("[Location: users/login]");
-            //$this->expectOutputRegex("[Register]");
+            $this->expectOutputRegex("[Username is already exist]");
         }
         public function testLogin()
         {
             $this->userController->login();
-            $this->expectOutputRegex("[Login User]");
-            $this->expectOutputRegex("[Id]");
+            $this->expectOutputRegex("[Email]");
             $this->expectOutputRegex("[Password]");
         }
         public function testLoginSuccess()
         {
             //ekspetasi : membuat akun user (registrasi)
             $user = new User();
-            $user->id = null;
-            $user->username = "User1";
+            $user->id = '13';
+            $user->firstname = 'fauzan';
+            $user->lastname = 'nurhidayat';
+            $user->email = "fauzannurhidayat8@gmail.com";
+            $user->password = password_hash("fauzan123", PASSWORD_BCRYPT);
+            $user->gender = 'male';
+            $user->phoneNumber = '081335457601';
+            $user->address = 'jakarta timur';
+            $user->jobs = 'junior programmer';
+            $user->dateOfBirth = '2001-02-05';
+            $user->username = 'fauzan14';
+            $user->image = '';
             $user->status = 'user';
-            $user->password = password_hash("User1", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
             //ekspetasi : memasukkan username dan password
-            $_POST['username'] = "User1";
-            $_POST['password'] = "User1";
+            $_POST['email'] = "fauzannurhidayat8@gmail.com";
+            $_POST['password'] = "fauzan123";
             $this->userController->postLogin();
-            
+
             //ekspetasi : redirect ke halaman dashboard
             $this->expectOutputRegex("[Location: /]");
         }
 
         public function testLoginValidationError()
         {
-            $_POST['id'] = "";
+            $_POST['email'] = "";
             $_POST['password'] = "";
             $this->userController->postLogin();
             $this->expectOutputRegex("[Login User]");
             $this->expectOutputRegex("[Id]");
             $this->expectOutputRegex("[Password]");
-            $this->expectOutputRegex("[Id, Name, Password cannot blank]");
+            $this->expectOutputRegex("[Email or Password cannot empty]");
         }
         public function testLoginUserNotFound()
         {
-            $_POST['id'] = "HAHA";
+            $_POST['email'] = "HAHA";
             $_POST['password'] = "HAHA";
             $this->userController->postLogin();
             $this->expectOutputRegex("[Login User]");
             $this->expectOutputRegex("[Id]");
             $this->expectOutputRegex("[Password]");
-            $this->expectOutputRegex("[Id or password is wrong]");
+            $this->expectOutputRegex("[Email or password is wrong]");
         }
         public function testLoginWrongPassword()
         {
@@ -134,8 +170,19 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         public function testLogout()
         {
             $user = new User();
-            $user->id = "14";
+            $user->id = '13';
+            $user->firstname = 'fauzan';
+            $user->lastname = 'nurhidayat';
+            $user->email = "fauzannurhidayat8@gmail.com";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
+            $user->gender = 'male';
+            $user->phoneNumber = '081335457601';
+            $user->address = 'jakarta timur';
+            $user->jobs = 'junior programmer';
+            $user->dateOfBirth = '2001-02-05';
+            $user->username = 'fauzan14';
+            $user->image = '';
+            $user->status = 'user';
             $this->userRepository->save($user);
 
             $session = new Session();
@@ -148,13 +195,24 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
             $this->userController->logout();
 
             $this->expectOutputRegex("[Location: /]");
-            $this->expectOutputRegex("[FZN : ]");
+            $this->expectOutputRegex("[Cookie : Location: /toko_online/public/]");
         }
-        public function testUpdateProfile()
+        public function testProfile()
         {
             $user = new User();
-            $user->id = "14";
+            $user->id = '13';
+            $user->firstname = 'fauzan';
+            $user->lastname = 'nurhidayat';
+            $user->email = "fauzannurhidayat8@gmail.com";
             $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
+            $user->gender = 'male';
+            $user->phoneNumber = '081335457601';
+            $user->address = 'jakarta timur';
+            $user->jobs = 'junior programmer';
+            $user->dateOfBirth = '2001-02-05';
+            $user->username = 'fauzan14';
+            $user->image = '';
+            $user->status = 'user';
             $this->userRepository->save($user);
 
             $session = new Session();
@@ -164,10 +222,10 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
 
             $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
 
-            $this->userController->updateProfile();
+            $this->userController->profile();
 
-            $this->expectOutputRegex("[Profile]");
-            $this->expectOutputRegex("[Id]");
+            $this->expectOutputRegex("[Balance]");
+            $this->expectOutputRegex("[fauzan14]");
         }
         public function testPostUpdateProfileSuccess()
         {
@@ -300,7 +358,6 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         public function testAddToShoppingSession()
         {
             $user = new User();
-            
         }
-     }
+    }
 }

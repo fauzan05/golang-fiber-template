@@ -61,13 +61,13 @@
   </div>
 </nav>
 <?php
-if ($model['error'] != null) :
+if ($model['error']) {
 ?>
   <div class="alert alert-danger text-center" role="alert">
-    <?= $model['error'] ?? '' ?>
+    <?= $model['error'] ?? null ?>
   </div>
 <?php
-endif;
+}
 ?>
 <div class="container-fluid">
   <div class="container">

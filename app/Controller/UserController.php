@@ -4,7 +4,6 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller;
 
 use Fauzannurhidayat\Php\TokoOnline\App\View;
 use Fauzannurhidayat\Php\TokoOnline\Config\Database;
-use Fauzannurhidayat\Php\TokoOnline\Domain\User;
 use Fauzannurhidayat\Php\TokoOnline\Exception\ValidationException;
 use Fauzannurhidayat\Php\TokoOnline\Model\AddToCartRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\BuyNowRequest;
@@ -33,10 +32,10 @@ class UserController
     }
     public function register()
     {
-        //berfungsi untuk menampilkan halaman register
         View::Render('User/Register', [
             'title' => 'Register New User',
             'logo' => 'iStore',
+            'error' => null
         ]);
     }
     public function postRegister()
@@ -70,6 +69,7 @@ class UserController
         View::Render('User/Login', [
             'title' => 'Login User',
             'logo' => 'iStore',
+            'error' => null
         ]);
     }
     public function postLogin()

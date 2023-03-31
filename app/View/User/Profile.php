@@ -34,29 +34,13 @@
         <button class="btn btn-primary" type="submit">Search</button>
       </form>
       <ul class="navbar-nav ms-5 me-5">
-        <?php
-        if ($model['userExist'] == null) {
-        ?>
-          <li class="nav-item me-2 dropdown">
-            <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/toko_online/public/users/login">Login</a></li>
-              <li><a class="dropdown-item" href="/toko_online/public/users/register">Register</a></li>
-            </ul>
-          </li>
-        <?php
-        } else {
-        ?>
-          <li class="nav-item me-2 dropdown">
-            <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/toko_online/public/users/dashboard">Profile</a></li>
-              <li><a class="dropdown-item" href="/toko_online/public/users/logout">Logout</a></li>
-            </ul>
-          </li>
-        <?php
-        }
-        ?>
+        <li class="nav-item me-2 dropdown">
+          <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/toko_online/public/users/dashboard">Profile</a></li>
+            <li><a class="dropdown-item" href="/toko_online/public/users/logout">Logout</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
@@ -74,7 +58,7 @@
       <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
         <p class="fw-light mt-2">Order</p>
         <hr>
-        <h2><?= $model['countAllTransaction']?></h2>
+        <h2><?= $model['countAllTransaction'] ?></h2>
       </div>
       <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
         <p class="fw-light mt-2">Product Review</p>

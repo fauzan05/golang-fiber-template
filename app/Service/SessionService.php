@@ -52,6 +52,7 @@ class SessionService
     public function current():?User
     {
         $sessionId = $_COOKIE[self::$COOKIE_NAME] ?? '';
+        // $sessionId = (empty($_COOKIE[self::$COOKIE_NAME])) ? null : self::$COOKIE_NAME;
         $session = $this->sessionRepository->findById($sessionId);
         if($session == null)
         {

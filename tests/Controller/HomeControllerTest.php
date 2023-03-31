@@ -31,25 +31,39 @@ class HomeControllerTest extends TestCase
     {
         $this->homeController->index();
 
-        $this->expectOutputRegex("[Login Management]");
+        $this->expectOutputRegex("[Login]");
+        $this->expectOutputRegex("[Register]");
     }
     public function testUserLogin()
     {
         $user = new User();
-        $user->username = "14";
-        $user->name = "Fauzan14";
-        $user->password = "Fauzan14";
+        $user->id = '13';
+        $user->firstname = 'fauzan';
+        $user->lastname = 'nurhidayat';
+        $user->email = "fauzannurhidayat8@gmail.com";
+        $user->password = password_hash("Fauzan14", PASSWORD_BCRYPT);
+        $user->gender = 'male';
+        $user->phoneNumber = '081335457601';
+        $user->address = 'jakarta timur';
+        $user->jobs = 'junior programmer';
+        $user->dateOfBirth = '2001-02-05';
+        $user->username = 'fauzan14';
+        $user->image = '';
+        $user->status = 'user';
+
         $this->userRepository->save($user);
 
         $session = new Session();
         $session->id = uniqid();
-        $session->userId = $user->username;
+        $session->userId = $user->id;
         $this->sessionRepository->save($session);
 
         $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
 
         $this->homeController->index();
 
-        $this->expectOutputRegex("[Hello Fauzan14]");   
+        $this->expectOutputRegex("[Logout]");
+        $this->expectOutputRegex("[Profile]");
+        
     }
 }
