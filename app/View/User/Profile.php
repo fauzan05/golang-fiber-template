@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbarrr">
   <div class="container-fluid m-3">
     <a class="navbar-brand fab fa-apple ms-3 me-5" href="/toko_online/public/" style="letter-spacing: 0.2rem;"><?= $model['logo'] ?? '' ?></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,7 +22,7 @@
           <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'Tv'; ?>">Tv</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">About</a>
+          <a class="nav-link" aria-current="page" href="/toko_online/public/users/about">About</a>
         </li>
 
         <li class="nav-item">
@@ -45,52 +45,57 @@
     </div>
   </div>
 </nav>
-<div class="row">
-  <div class="container-fluid col-7 my-4" style="border: 1px solid #dee2e6; height:auto; position:absolute; right:10%">
-    <h1 class="m-3">Welcome, <?= $model['username'] ?></h1>
-    <hr>
-    <div class="row text-center">
-      <h4 class="col-12 fw-light">Balance</h4>
-      <h4 class="fw-bolder"><?= $model['balance'] ?> IDR</h4>
-    </div>
-    <hr>
-    <div class="row gap-0 row-gap-5 mb-5">
-      <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
-        <p class="fw-light mt-2">Order</p>
-        <hr>
-        <h2><?= $model['countAllTransaction'] ?></h2>
+<div class="containerrr">
+  <div class="row">
+    <div class="container-fluid col-7 my-4" style="border: 1px solid #dee2e6; height:auto; position:absolute; right:10%">
+      <h1 class="m-3">Welcome, <?= $model['username'] ?></h1>
+      <hr>
+      <div class="row text-center" style="justify-content: center;">
+        <h4 class="col-12 fw-light">Balance</h4>
+        <h4 class="fw-bolder"><?= $model['balance'] ?> IDR</h4>
+        <a href="/toko_online/public/users/topUp" style="text-decoration: none;"><button type="button" class="btn btn-primary col-lg-5">Top Up</button></a>
       </div>
-      <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
-        <p class="fw-light mt-2">Product Review</p>
-        <hr>
-      </div>
-      <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
-        <p class="fw-light mt-2">Address</p>
-        <hr>
-      </div>
-      <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
-        <p class="fw-light mt-2">Point</p>
-        <hr>
+      <hr>
+      <div class="row gap-0 row-gap-5 mb-5">
+        <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
+          <p class="fw-light mt-2">Order</p>
+          <hr>
+          <h2><?= $model['countAllTransaction'] ?></h2>
+        </div>
+        <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
+          <p class="fw-light mt-2">Product Review</p>
+          <hr>
+        </div>
+        <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
+          <p class="fw-light mt-2">Address</p>
+          <hr>
+        </div>
+        <div class="container-fluid col-5 text-center" style="border: 1px solid #dee2e6; height:150px;">
+          <p class="fw-light mt-2">Point</p>
+          <hr>
+        </div>
       </div>
     </div>
   </div>
 </div>
 </div>
-
-<div class="row">
-  <div class="container-fluid col-2 my-4" style=" height:auto; position:absolute; left:5%">
-    <div class="row">
-      <a class="col-12 mt-3 fw-bolder" href="http://localhost/toko_online/public/users/profile" style="text-decoration: none; color:black;">Dashboard</a>
-      <hr>
-      <a class="col-12" href="/toko_online/public/users/updateProfile" style="text-decoration: none; color:black;">Account Information</a>
-      <hr>
-      <a class="col-12 " href="/toko_online/public/users/orderHistory" style="text-decoration: none; color:black;">Orders History</a>
-      <hr>
-      <a class="col-12 " href="" style="text-decoration: none; color:black;">Track Orders</a>
-      <hr>
-      <a class="col-12 " href="" style="text-decoration: none; color:black;">Favourite</a>
-      <hr>
+<div class="containerrr">
+  <div class="row">
+    <div class="container-fluid col-2 my-4" style=" height:auto; position:absolute; left:5%">
+      <div class="row">
+        <a class="col-12 mt-3 fw-bolder" href="/toko_online/public/users/dashboard" style="text-decoration: none; color:black;">Dashboard</a>
+        <hr>
+        <a class="col-12" href="/toko_online/public/users/updateProfile" style="text-decoration: none; color:black;">Account Information</a>
+        <hr>
+        <a class="col-12 " href="/toko_online/public/users/orderHistory" style="text-decoration: none; color:black;">Orders History</a>
+        <hr>
+        <a class="col-12 " href="" style="text-decoration: none; color:black;">Track Orders</a>
+        <hr>
+        <a class="col-12 " href="" style="text-decoration: none; color:black;">Favourite</a>
+        <hr>
+        <a class="col-12 " href="http://localhost/toko_online/public/users/updatePassword" style="text-decoration: none; color:black;">Update Password</a>
+        <hr>
+      </div>
     </div>
-
   </div>
 </div>

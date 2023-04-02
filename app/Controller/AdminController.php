@@ -125,7 +125,6 @@ class AdminController
         $request->description = $_POST['description'];
         $request->created_at = null;
         $request->modified_at = null;
-
         try {
             // var_dump($_POST); die;
             //var_dump($_FILES); die;

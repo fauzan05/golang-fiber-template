@@ -7,6 +7,7 @@ class AddToCartRequest
 {
     public ?string $id = null;
     public ?string $userId = null;
+    public ?string $stock = null;
     public ?int $total = null;
     public ?int $price = null;
     public ?string $sessionId = null;

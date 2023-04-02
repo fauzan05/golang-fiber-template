@@ -4,9 +4,11 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller;
 
 use Fauzannurhidayat\Php\TokoOnline\App\View;
 use Fauzannurhidayat\Php\TokoOnline\Config\Database;
+use Fauzannurhidayat\Php\TokoOnline\Domain\User;
 use Fauzannurhidayat\Php\TokoOnline\Exception\ValidationException;
 use Fauzannurhidayat\Php\TokoOnline\Model\AddToCartRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\BuyNowRequest;
+use Fauzannurhidayat\Php\TokoOnline\Model\TopUpRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserLoginRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserPasswordUpdateRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserProfileUpdateRequest;
@@ -108,13 +110,12 @@ class UserController
     {
         $session = $this->sessionService->current();
         $user = $this->userRepository->findByUsername($session->username);
-        $transaction = $this->userRepository->countAllTransaction();
+        $transaction = $this->userRepository->countAllTransaction($session->id);
         View::Render(
             'User/Profile',
             [
                 'logo' => 'iStore',
                 'title' => 'User Profile',
-                'userExist' => $session,
                 'id' => $user->id,
                 'firstname' => $user->firstname,
                 'lastname' => $user->lastname,
@@ -141,7 +142,7 @@ class UserController
             [
                 'title' => 'Update User Profile',
                 'logo' => 'iStore',
-                'userExist' => $session,
+                'error' => null,
                 'id' => $user->id,
                 'firstname' => $user->firstname,
                 'lastname' => $user->lastname,
@@ -201,17 +202,16 @@ class UserController
     public function updatePassword()
     {
         $user = $this->sessionService->current();
-        View::Render('User/Password', [
+        View::Render('User/UpdatePassword', [
             'title' => 'Update User Password',
             'logo' => 'iStore',
-            'userExist' => $user,
+            'error' => null,
             'username' => $user->username
         ]);
     }
     public function postUpdatePassword()
     {
         $user = $this->sessionService->current();
-
         $request = new UserPasswordUpdateRequest();
         $request->username = $user->username;
         $request->oldPassword = $_POST['oldPassword'];
@@ -220,10 +220,10 @@ class UserController
         try {
             $this->userService->updatePassword($request);
             //redirect ke halaman dashboard
-            View::Redirect('/toko_online/public/');
+            View::Redirect('/toko_online/public/users/dashboard');
         } catch (ValidationException $exception) {
             View::Render(
-                'User/Password',
+                'User/UpdatePassword',
                 [
                     'title' => 'Update User Password',
                     'error' => $exception->getMessage(),
@@ -242,8 +242,6 @@ class UserController
                 'logo' => 'iStore',
                 'username' => $user->username,
                 'showAllProduct' => $showAllProduct,
-                'logoutButton' => 'Logout',
-                'logout' => 'logout'
             ]);
         } else if ($user == null) {
             $showAllProduct = $this->userRepository->showProductByCategory($_GET['category']);
@@ -251,8 +249,6 @@ class UserController
                 'title' => 'iStore',
                 'logo' => 'iStore',
                 'showAllProduct' => $showAllProduct,
-                'logoutButton' => 'Login',
-                'login' => 'login'
             ]);
         }
     }
@@ -266,6 +262,7 @@ class UserController
             [
                 'title' => 'iStore',
                 'logo' => 'iStore',
+                'error' => null,
                 'userExist' => $user,
                 'username' => $user->username,
                 'cartsArray' => $cartsArray
@@ -285,13 +282,17 @@ class UserController
     public function productDetail()
     {
         $user = $this->sessionService->current();
-        if (isset($_GET['id'])) {
-            $product = $this->userRepository->findProductsById($_GET['id']);
+        $id = $_GET['id'];
+        if (isset($id)) {
+            $product = $this->userRepository->findProductsById($id);
             View::Render(
                 'User/ProductDetail',
                 [
                     'title' => 'iStore',
                     'logo' => 'iStore',
+                    'error' => null,
+                    'addToCart' => null,
+                    'buyNow' => null,
                     'username' => $user->username,
                     'productId' => $product->id,
                     'productName' => $product->name,
@@ -309,7 +310,7 @@ class UserController
                 [
                     'title' => 'iStore',
                     'logo' => 'iStore',
-                    'username' => $user->username,
+                    'username' => $user->username
                 ]
             );
         }
@@ -323,6 +324,7 @@ class UserController
         if ($_POST['addToCart'] == 'true') {
             $request = new AddToCartRequest();
             $request->id = null;
+            $request->stock = $_POST['stock'];
             $request->quantity = $quantity;
             $request->userId = $user->id;
             $request->price = $price;
@@ -354,8 +356,9 @@ class UserController
         } else if (isset($_POST['buyNow']) == 'true') {
 
             $request = new BuyNowRequest();
-            $request->balanceUser = $this->userRepository->checkUserBalance($user->id)->balance;   
+            $request->balanceUser = $this->userRepository->checkUserBalance($user->id)->balance;
             $request->price = intval($_POST['price']);
+            $request->stock = $_POST['stock'];
             $request->userId = $user->id;
             $request->total = intval($_POST['quantity']);
             $request->productId = $_POST['id'];
@@ -380,14 +383,13 @@ class UserController
                         'productImage' => $product->image,
                         'productDescription' => $product->description
                     ]
-                );
-            }
+                );            }
         }
     }
     public function checkoutStatus()
     {
         $user = $this->sessionService->current();
-
+        $order = $this->userRepository->showLatestTransaction($user->id);
         View::Render(
             'User/CheckoutStatus',
             [
@@ -395,19 +397,7 @@ class UserController
                 'logo' => 'iStore',
                 'userExist' => $user,
                 'username' => $user->username,
-            ]
-        );
-    }
-    public function transaction()
-    {
-        $user = $this->sessionService->current();
-        View::Render(
-            'User/Transaction',
-            [
-                'title' => 'iStore',
-                'logo' => 'iStore',
-                'username' => $user->username,
-                'userExist' => $user,
+                'showLatestOrder' => $order
             ]
         );
     }
@@ -415,6 +405,7 @@ class UserController
     {
         $user = $this->sessionService->current();
         $order = $this->userRepository->showAllTransaction($user->id);
+        $count = $this->userRepository->countAllTransaction($user->id);
         View::Render(
             'User/OrderHistory',
             [
@@ -422,7 +413,55 @@ class UserController
                 'logo' => 'iStore',
                 'username' => $user->username,
                 'userExist' => $user,
-                'showAllOrder' => $order
+                'showAllOrder' => $order,
+                'countAllTransaction' => $count
+            ]
+        );
+    }
+    public function topUp()
+    {
+        $user = $this->sessionService->current();
+        $showBalance = $this->userRepository->checkBalance($user->username);
+        View::Render(
+            'User/TopUp',
+            [
+                'title' => 'iStore',
+                'logo' => 'iStore',
+                'error' => null,
+                'showBalance' => $showBalance,
+                'username' => $user->username
+            ]
+        );
+    }
+    public function postTopUp()
+    {
+        $user = $this->sessionService->current();
+        $showBalance = $this->userRepository->checkBalance($user->username);
+        $request = new TopUpRequest();
+        $request->username = $_POST['username'];
+        $request->balance = $_POST['balance'];
+        try {
+            $this->userService->topUpService($request);
+            View::Redirect('/toko_online/public/users/dashboard');
+        } catch (ValidationException $exception) {
+            View::Render(
+                'User/TopUp',
+                [
+                    'title' => 'iStore',
+                    'logo' => 'iStore',
+                    'error' => $exception->getMessage(),
+                    'showBalance' => $showBalance
+                ]
+            );
+        }
+    }
+    public function about()
+    {
+        View::Render(
+            'Users/About',
+            [
+                'title' => 'iStore',
+                'logo' => 'iStore'
             ]
         );
     }

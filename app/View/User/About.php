@@ -35,50 +35,15 @@
                 <input class="form-control form-control-sm me-2" type="text" placeholder="Search" aria-label="Search">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
-            <ul class="navbar-nav ms-5 me-5">
-                <li class="nav-item me-2 dropdown">
-                    <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/toko_online/public/users/login">Login</a></li>
-                        <li><a class="dropdown-item" href="/toko_online/public/users/register">Register</a></li>
-                    </ul>
-                </li>
+            <ul class="navbar-nav ms-5 me-5">       
+                    <li class="nav-item me-2 dropdown">
+                        <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/toko_online/public/users/login">Login</a></li>
+                            <li><a class="dropdown-item" href="/toko_online/public/users/register">Register</a></li>
+                        </ul>
+                    </li>
             </ul>
         </div>
     </div>
 </nav>
-<div class="alerttt">
-    <?php
-    if ($model['error']) {
-    ?>
-        <div class="alert alert-danger text-center" role="alert">
-            <?= $model['error'] ?? null ?>
-        </div>
-    <?php
-    }
-    ?>
-</div>
-<div class="containerrr">
-    <div class="row" style="justify-content: center; align-items:center; height:100vh;">
-        <div class="container-fluid col-lg-4">
-            <span class="fab fa-apple position-login-logo" style="letter-spacing: 0.5rem; font-size:5rem">LOGIN</span>
-            <div class="col-lg-12 text-center mt-5">
-                <p>Don't have an any account?</p>
-                <a href="/toko_online/public/users/register">Register Now!</a>
-            </div>
-        </div>
-        <div class="container-fluid col-lg-4">
-            <form role="form" method="POST" action="/toko_online/public/users/login">
-                <div class="mb-4">
-                    <label for="exampleFormControlInput1" class="form-label">Email</label>
-                    <input type="text" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" style="width: 350px" value="<?= $_POST['email'] ?? '' ?>">
-                </div>
-                <div class="mb-4">
-                    <label for="exampleFormControlInput1" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="exampleFormControlInput1" placeholder="password" style="width: 350px">
-                </div>
-                <button type="submit" class="btn btn-primary mt-3" style="width: 350px">Login</button>
-            </form>
-        </div>
-    </div>
-</div>

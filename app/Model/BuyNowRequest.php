@@ -7,6 +7,7 @@ class BuyNowRequest
     public ?string $id = null;
     public ?string $userId = null;
     public ?int $total = null;
+    public ?int $stock = null;
     public ?string $paymentId = null;
     public ?string $orderId = null;
     public ?string $amount = null;

@@ -22,8 +22,8 @@
           <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'Tv'; ?>">Tv</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">About</a>
-        </li>  
+          <a class="nav-link" aria-current="page" href="/toko_online/public/users/about">About</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link fa-solid fa-cart-shopping mt-1" aria-current="page" href="/toko_online/public/users/cart?category=<?= $category = 'Cart'; ?>"></a>
         </li>
@@ -32,20 +32,7 @@
         <input class="form-control form-control-sm me-2" type="text" placeholder="Search" aria-label="Search">
         <button class="btn btn-primary" type="submit">Search</button>
       </form>
-      <ul class="navbar-nav ms-5 me-5">
-        <?php
-        if ($model['userExist'] == null) {
-        ?>
-          <li class="nav-item me-2 dropdown">
-            <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/toko_online/public/users/login">Login</a></li>
-              <li><a class="dropdown-item" href="/toko_online/public/users/register">Register</a></li>
-            </ul>
-          </li>
-        <?php
-        } else {
-        ?>
+      <ul class="navbar-nav ms-5 me-5">  
           <li class="nav-item me-2 dropdown">
             <a class="nav-link fa-solid fa-user" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false"></a>
             <ul class="dropdown-menu">
@@ -53,9 +40,6 @@
               <li><a class="dropdown-item" href="/toko_online/public/users/logout">Logout</a></li>
             </ul>
           </li>
-        <?php
-        }
-        ?>
       </ul>
     </div>
   </div>

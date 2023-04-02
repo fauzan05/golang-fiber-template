@@ -23,16 +23,18 @@ Router::add('GET', '/users/logout', UserController::class, 'logout', [MustLoginM
 Router::add('GET', '/users/updateProfile', UserController::class, 'updateProfile', [MustLoginMiddleware::class]);
 Router::add('GET', '/users/dashboard', UserController::class, 'profile', [MustLoginMiddleware::class]);
 Router::add('POST', '/users/updateProfile', UserController::class, 'postUpdateProfile', [MustLoginMiddleware::class]);
-Router::add('GET', '/users/password', UserController::class, 'updatePassword', [MustLoginMiddleware::class]);
-Router::add('POST', '/users/password', UserController::class, 'postUpdatePassword', [MustLoginMiddleware::class]);
+Router::add('GET', '/users/updatePassword', UserController::class, 'updatePassword', [MustLoginMiddleware::class]);
+Router::add('POST', '/users/updatePassword', UserController::class, 'postUpdatePassword', [MustLoginMiddleware::class]);
 Router::add('GET', '/users/listProduct', UserController::class, 'listProduct',[MustNotLoginMiddleware::class]);
 Router::add('GET', '/users/productDetail', UserController::class, 'productDetail',[MustLoginMiddleware::class]);
 Router::add('POST', '/users/productDetail', UserController::class, 'postProductDetail',[MustLoginMiddleware::class]);
 Router::add('GET', '/users/checkoutStatus', UserController::class, 'checkoutStatus',[MustLoginMiddleware::class]);
 Router::add('GET', '/users/cart', UserController::class, 'cart',[MustLoginMiddleware::class]);
 Router::add('GET', '/users/deleteCart', UserController::class, 'deleteCart',[MustLoginMiddleware::class]);
-Router::add('GET', '/users/transaction', UserController::class, 'transaction',[MustLoginMiddleware::class]);
 Router::add('GET', '/users/orderHistory', UserController::class, 'orderHistory',[MustLoginMiddleware::class]);
+Router::add('GET', '/users/topUp', UserController::class, 'topUp',[MustLoginMiddleware::class]);
+Router::add('POST', '/users/topUp', UserController::class, 'postTopUp',[MustLoginMiddleware::class]);
+Router::add('GET', '/users/about', UserController::class, 'about',[MustNotLoginMiddleware::class]);
 //admin controller
 Router::add('GET', '/admin/login', AdminController::class, 'login', [MustNotLoginMiddleware::class]);
 Router::add('POST', '/admin/login', AdminController::class, 'postLogin', [MustNotLoginMiddleware::class]);

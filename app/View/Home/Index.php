@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbarrr">
   <div class="container-fluid m-3">
     <a class="navbar-brand fab fa-apple ms-3 me-5" href="/toko_online/public/" style="letter-spacing: 0.2rem;"><?= $model['logo'] ?? '' ?></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,7 @@
   </div>
 </nav>
 
-<div class="container-fluid">
+<div class="container-fluid containerrr">
   <div class="container">
     <h2 class="text-center py-5">Our Products</h2>
     <div class="row gap-0 row-gap-4">

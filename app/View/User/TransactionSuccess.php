@@ -22,7 +22,7 @@
           <a class="nav-link" aria-current="page" href="/toko_online/public/users/listProduct?category=<?= $category = 'Tv'; ?>">Tv</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">About</a>
+          <a class="nav-link" aria-current="page" href="/toko_online/public/users/about">About</a>
         </li>
         <li class="nav-item">
           <a class="nav-link fa-solid fa-cart-shopping mt-1" aria-current="page" href="/toko_online/public/users/cart"></a>

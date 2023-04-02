@@ -85,6 +85,12 @@ class UserRepository
         ]);
         return $user;
     }
+    public function updatePassword(User $user): User
+    {
+        $statement = $this->connection->prepare("UPDATE users SET password = ? WHERE username = ?");
+        $statement->execute([$user->password, $user->username]);
+        return $user;
+    }
     public function findByUsername(string $username): ?User
     {
         $statement = $this->connection->prepare("SELECT * FROM users WHERE username = ?");
@@ -168,13 +174,13 @@ class UserRepository
     {
         $this->connection->exec("DELETE FROM users");
         $this->connection->exec("DELETE FROM products");
+        $this->connection->exec("DELETE FROM shopping_session");
         $this->connection->exec("DELETE FROM cart_item");
         $this->connection->exec("DELETE FROM order_details");
         $this->connection->exec("DELETE FROM order_items");
         $this->connection->exec("DELETE FROM payment_details");
-        $this->connection->exec("DELETE FROM shopping_session");
     }
-   
+
     public function findProductsById(string $id): ?Product
     {
         $statement = $this->connection->prepare("SELECT id, name, image, stock, color, capacity, description, category, price, created_at, modified_at FROM products WHERE id = ?");
@@ -333,10 +339,10 @@ class UserRepository
         $statement = $this->connection->prepare("SELECT id FROM shopping_session WHERE user_id = ? ORDER BY id DESC LIMIT 1");
         $statement->execute([$cart->userId]);
         try {
-            if ($row = $statement->fetch()) {
-
+            if ($statement->rowCount() > 0) {
+                $row = $statement->fetch();
                 $cart->sessionId = $row['id'];
-            } else {
+            } else if ($statement->rowCount() < 1){
                 return null;
             }
         } finally {
@@ -361,7 +367,7 @@ class UserRepository
         products.price, cart_item.id as cart_item_id, cart_item.quantity, cart_item.created_at, shopping_session.user_id, cart_item.session_id from products 
         INNER JOIN cart_item ON cart_item.product_id = products.id
         INNER JOIN shopping_session ON shopping_session.id = cart_item.session_id
-        WHERE shopping_session.user_id = ? ORDER BY id ASC
+        WHERE shopping_session.user_id = ? ORDER BY id DESC
         ");
         $statement->execute([$id]);
         try {
@@ -403,20 +409,20 @@ class UserRepository
         $statement->execute([$id]);
         $statement->closeCursor();
     }
-    public function checkUserBalance($id):?User
+    public function checkUserBalance($id): ?User
     {
         $statement = $this->connection->prepare("SELECT balance FROM users WHERE id = ?");
         $statement->execute([$id]);
-        try{
-            if($statement->rowCount() > 0){
+        try {
+            if ($statement->rowCount() > 0) {
                 $row = $statement->fetch();
                 $user = new User();
                 $user->balance = $row['balance'];
                 return $user;
-            }else{
+            } else {
                 return null;
             }
-        }finally{
+        } finally {
             $statement->closeCursor();
         }
     }
@@ -443,7 +449,17 @@ class UserRepository
         } finally {
             $statement->closeCursor();
         }
-        if ($user->balance >= $order->amount) {
+        $statement = $this->connection->prepare("SELECT stock FROM products WHERE id = ?");
+        $statement->execute([$order->productId]);
+        try{
+            if($row = $statement->fetch()){
+                $product = new Product();
+                $product->stock = $row['stock'];
+            }
+        }finally{
+            $statement->closeCursor();
+        }
+        if ($user->balance >= $order->amount && $product->stock - $order->total >= 0) {
             $statement = $this->connection->prepare("INSERT INTO payment_details(order_id,amount) VALUES(?,?)");
             if ($statement->execute([$order->orderId, $order->amount]) == true) {
                 $user->balance -= $order->amount;
@@ -451,15 +467,9 @@ class UserRepository
                 $statement->execute([$user->balance, $order->userId]);
                 $statement = $this->connection->prepare("SELECT stock FROM products WHERE id = ?");
                 $statement->execute([$order->productId]);
-                try {
-                    if ($row = $statement->fetch()) {
-                        $product = new Product();
-                        $product->stock = $row['stock'];
-                        $product->stock -= $order->total;
-                    }
-                } finally {
-                    $statement->closeCursor();
-                }
+               
+                $product->stock -= $order->total;
+                  
                 $statement = $this->connection->prepare("UPDATE products SET stock = ? WHERE id = ?");
                 $statement->execute([$product->stock, $order->productId]);
                 $statement = $this->connection->prepare("UPDATE payment_details SET status = ? WHERE order_id = ?");
@@ -487,12 +497,14 @@ class UserRepository
                 $statement->execute([$order->orderId, $order->productId]);
                 return $order;
             }
+        }else if($user->balance < $order->amount && $product->stock - $order->total < 0){
+            return null;
         }
     }
-    public function countAllTransaction()
+    public function countAllTransaction($id)
     {
-        $statement = $this->connection->prepare("SELECT COUNT(*) FROM order_details");
-        $statement->execute();
+        $statement = $this->connection->prepare("SELECT COUNT(*) FROM order_details WHERE user_id = ?");
+        $statement->execute([$id]);
         try {
             if ($row = $statement->fetchColumn()) {
                 $total = $row;
@@ -506,20 +518,16 @@ class UserRepository
     }
     public function showAllTransaction($id): ?array
     {
-        $statement = $this->connection->prepare("
-        SELECT order_details.id as order_id, order_details.user_id, order_details.payment_id,
-        order_details.total as quantity, payment_details.amount,
+        $statement = $this->connection->prepare("SELECT order_details.id as order_id,
+        order_details.payment_id, order_details.total as quantity, payment_details.amount,
         DATE_FORMAT(payment_details.created_at, '%d, %M %Y') as payment_date,
-        DATE_FORMAT(order_details.created_at, '%d, %M %Y') as order_date,
-        order_items.product_id, products.name, products.category, products.image,
-        payment_details.status, products.price 
-        FROM products
-        INNER JOIN order_items ON order_items.product_id = products.id
+        DATE_FORMAT(order_details.created_at, '%d, %M %Y') as order_date, order_items.product_id,
+        products.name, products.category, products.image, payment_details.status, products.price 
+        FROM products INNER JOIN order_items ON order_items.product_id = products.id
         INNER JOIN order_details ON order_details.id = order_items.order_id
         INNER JOIN payment_details ON payment_details.id = order_details.payment_id
         WHERE order_details.user_id = ? 
-        ORDER BY order_details.id DESC;
-        ");
+        ORDER BY order_details.id DESC");
         $statement->execute([$id]);
         try {
             $array = [];
@@ -527,11 +535,9 @@ class UserRepository
                 $rows = $statement->fetchAll();
                 foreach ($rows as $row) {
                     $order = new Order();
-                    $order->name = $row['name'];
                     $order->orderId = $row['order_id'];
                     $order->paymentId = $row['payment_id'];
                     $order->amount = $row['amount'];
-                    $order->userId = $row['user_id'];
                     $order->total = $row['quantity'];
                     $order->productId = $row['product_id'];
                     $order->productName = $row['name'];
@@ -550,5 +556,68 @@ class UserRepository
         } finally {
             $statement->closeCursor();
         }
+    }
+    public function showLatestTransaction($id): ?array
+    {
+        $statement = $this->connection->prepare("SELECT order_details.id as order_id,
+        order_details.payment_id, order_details.total as quantity, payment_details.amount,
+        DATE_FORMAT(payment_details.created_at, '%d, %M %Y') as payment_date,
+        DATE_FORMAT(order_details.created_at, '%d, %M %Y') as order_date, order_items.product_id,
+        products.name, products.category, products.image, payment_details.status, products.price 
+        FROM products INNER JOIN order_items ON order_items.product_id = products.id
+        INNER JOIN order_details ON order_details.id = order_items.order_id
+        INNER JOIN payment_details ON payment_details.id = order_details.payment_id
+        WHERE order_details.user_id = ? 
+        ORDER BY order_details.id DESC LIMIT 1");
+        $statement->execute([$id]);
+        try {
+            $array = [];
+            if ($statement->rowCount() > 0) {
+                $rows = $statement->fetchAll();
+                foreach ($rows as $row) {  
+                    $order = new Order();
+                    $order->orderId = $row['order_id'];
+                    $order->paymentId = $row['payment_id'];
+                    $order->amount = $row['amount'];
+                    $order->total = $row['quantity'];
+                    $order->productId = $row['product_id'];
+                    $order->productName = $row['name'];
+                    $order->category = $row['category'];
+                    $order->status = $row['status'];
+                    $order->image = $row['image'];
+                    $order->price = $row['price'];
+                    $order->created_at_payment = $row['payment_date'];
+                    $order->created_at_order = $row['order_date'];
+                    array_push($array, $order);
+                }
+                return $array;
+            } else if ($statement->rowCount() < 0) {
+                return null;
+            }
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+    public function checkBalance($username)
+    {
+        $statement = $this->connection->prepare("SELECT balance FROM users WHERE username = ?");
+        $statement->execute([$username]);
+        try {
+            if ($statement->rowCount() > 0) {
+                $row = $statement->fetch();
+                $username = $row['balance'];
+                return $username;
+            } else if ($statement->rowCount() < 1) {
+                return null;
+            }
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+    public function topUp(User $user): User
+    {
+        $statement = $this->connection->prepare("UPDATE users SET balance = ? WHERE username = ?");
+        $statement->execute([$user->balance, $user->username]);
+        return $user;
     }
 }

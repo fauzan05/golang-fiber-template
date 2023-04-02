@@ -22,6 +22,8 @@ use Fauzannurhidayat\Php\TokoOnline\Model\EditProductRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\EditProductResponse;
 use Fauzannurhidayat\Php\TokoOnline\Model\ShoppingSessionRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\ShoppingSessionResponse;
+use Fauzannurhidayat\Php\TokoOnline\Model\TopUpRequest;
+use Fauzannurhidayat\Php\TokoOnline\Model\TopUpResponse;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserLoginRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserLoginResponse;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserPasswordUpdateRequest;
@@ -215,7 +217,7 @@ class UserService
             }
 
             $user->password = password_hash($request->newPassword, PASSWORD_BCRYPT);
-            $this->userRepository->update($user);
+            $this->userRepository->updatePassword($user);
 
             Database::commitTransaction();
 
@@ -235,7 +237,7 @@ class UserService
             $request->username == null || $request->oldPassword == null || $request->newPassword == null ||
             trim($request->username) == "" || trim($request->oldPassword) == "" || trim($request->newPassword) == ""
         ) {
-            throw new ValidationException("Old Password, New Password cannot blank");
+            throw new ValidationException("Old Password, New Password cannot empty");
         }
     }
 
@@ -377,6 +379,9 @@ class UserService
         if($request->quantity <= 0){
             throw new ValidationException('Quantity is not lower than 0');
         }
+        if($request->stock - $request->quantity <= 0){
+            throw new ValidationException('The product has out of stock');
+        }
         try {
             Database::beginTransaction();
             $cart = new Cart();
@@ -414,6 +419,10 @@ class UserService
         {
             throw new ValidationException('Your balance isnt enough');
         }
+        if($request->stock - $request->total < 0)
+        {
+            throw new ValidationException('quantity exceeds stock');
+        }
         try{
             Database::beginTransaction();
             $buyNow = new Order();
@@ -438,6 +447,33 @@ class UserService
         if($request->total == null || trim($request->total) == "" || empty($request->total))
         {
             throw new ValidationException('Quantity form is doesnt empty');
+        }
+    }
+    public function topUpService(TopUpRequest $request):TopUpResponse
+    {
+        $this->validateTopUpService($request);
+        try{
+            Database::beginTransaction();
+            $balanceNow = $this->userRepository->checkBalance($request->username);
+            $user = new User();
+            $user->username = $request->username;
+            $user->balance = $balanceNow + $request->balance;
+            $this->userRepository->topUp($user);
+            $response = new TopUpResponse();
+            $response->user = $user;
+            Database::commitTransaction();
+            return $response;
+        }catch(\Exception $exception)
+        {
+            Database::rollbackTransaction();
+            throw $exception;
+        }        
+    }
+    private function validateTopUpService(TopUpRequest $request)
+    {
+        if($request->username == null || trim($request->username) == "" || empty($request->username))
+        {
+            throw new ValidationException('This form must be filled !');
         }
     }
 }
