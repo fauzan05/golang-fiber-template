@@ -47,6 +47,7 @@ class HomeController
             $countUsers = $this->userRepository->countAllUsers();
             View::Render('Admin/Dashboard', [
                 'title' => 'iStore Admin',
+                'logo' =>'iStore',
                 'user' => $user->username,
                 'countAllProducts' => $countProducts,
                 'countAllUsers' => $countUsers        

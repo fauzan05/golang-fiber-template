@@ -19,16 +19,44 @@
   top:11%;
   z-index:-1;
 }
-.navbarrr{
-  position:fixed;
-  width:100%;
-  z-index:2;
-}
+
 .not-found{
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: black;
+  
 }
+
+.navbar1{
+  z-index: -1;
+  position: fixed;
+  height:100vh; 
+  flex-direction:column; 
+  width: 30vh;
+}
+
+.ull1{
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   list-style: none;
+}
+.lii1{
+  margin: 0;
+  padding: 0;
+}
+
+.navbar2{
+  z-index: 1;
+  position: fixed;
+  height:15vh; 
+  flex-direction:row; 
+  width: 100%;
+}
+
+
+
+
 

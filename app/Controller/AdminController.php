@@ -33,7 +33,8 @@ class AdminController
     public function login()
     {
             View::Render('Admin/Login', [
-                'title' => 'Login Admin'
+                'title' => 'Login Admin',
+                'logo' => 'iStore'
             ]); 
     }
     public function postLogin()
@@ -51,11 +52,13 @@ class AdminController
                 }
             View::Render('Admin/Login', [
                 'title' => 'Login Admin',
+                'logo' => 'iStore',
                 'error' => 'Username or password is wrong'
             ]);
         } catch (ValidationException $exception) {
             View::Render('Admin/Login', [
                 'title' => 'Login Admin',
+                'logo' => 'iStore',
                 'error' => $exception->getMessage()
             ]);
         }
