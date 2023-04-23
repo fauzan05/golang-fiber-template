@@ -166,30 +166,42 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         public function testAddProduct()
         {
             $user = new User();
-            $user->id = 4;
+            $user->id = 12;
+            $user->firstname = 'admin';
+            $user->lastname = 'admin';
+            $user->email = 'admin';
+            $user->gender = 'male';
+            $user->phoneNumber = '091233243';
+            $user->address = 'on earth';
+            $user->dateOfBirth = '2001-05-02';
+            $user->jobs = 'admin';
+            $user->image = '34234234.jpeg';
+            $user->username = 'admin';
+            $user->password = password_hash('admin', PASSWORD_BCRYPT);
             $user->status = 'admin';
-            $user->username = 'adminn';
-            $user->firstname = "admin";
-            $user->password = password_hash("admin", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
-
+            
             $session = new Session();
             $session->id = uniqid();
             $session->userId = $user->id;
             $this->sessionRepository->save($session);
-
             $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
+            $this->homeController->index();
 
-            $_POST['id'] = '1';
-            $_POST['name'] = 'iPhone X';
-            $_POST['description'] = 'ini adalah iPhone X';
+            $this->adminController->addProduct();
+            $_POST['id'] = '12';
+            $_FILES['image'] = 'iPhone4.jpg';
+            $_POST['name'] = 'iPhone 4';
             $_POST['category'] = 'iPhone';
-            $_POST['price'] = '10000';
+            $_POST['price'] = 50000;
+            $_POST['color'] = 'blue';
+            $_POST['capacity'] = '256GB';
+            $_POST['stock'] = 500;
+            $_POST['description'] = 'this is an iPhone 4 the color is blue';
             $this->adminController->postAddProduct();
 
-            $this->homeController->index();
-            //$this->expectOutputRegex("[Location: /toko_online/public/]");
-            $this->expectOutputRegex("[iPhone X]");
+            $this->expectOutputRegex("[iPhone 4]");
+            
         }
         public function testAddProductFail()
         {
@@ -220,29 +232,60 @@ namespace Fauzannurhidayat\Php\TokoOnline\Controller {
         public function testEditProduct()
         {
             $user = new User();
-            $user->id = 4;
+            $user->id = 12;
+            $user->firstname = 'admin';
+            $user->lastname = 'admin';
+            $user->email = 'admin';
+            $user->gender = 'male';
+            $user->phoneNumber = '091233243';
+            $user->address = 'on earth';
+            $user->dateOfBirth = '2001-05-02';
+            $user->jobs = 'admin';
+            $user->image = '34234234.jpeg';
+            $user->username = 'admin';
+            $user->password = password_hash('admin', PASSWORD_BCRYPT);
             $user->status = 'admin';
-            $user->username = 'adminn';
-            $user->firstname = "admin";
-            $user->password = password_hash("admin", PASSWORD_BCRYPT);
             $this->userRepository->save($user);
 
+            $product = new Product();
+            $product->id = '12';
+            $product->image = 'iPhone3g.jpg';
+            $product->name = 'iPhone 3g';
+            $product->category = 'iPhone';
+            $product->price = 10000;
+            $product->color = 'yellow';
+            $product->stock = 13;
+            $product->capacity = '128GB';
+            $product->description = 'this is an iphone';
+            $product->created_at = null;
+            $product->modified_at = null;
+            $this->userRepository->saveProduct($product);
+            
             $session = new Session();
             $session->id = uniqid();
             $session->userId = $user->id;
             $this->sessionRepository->save($session);
-
             $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
+            $this->homeController->index();
 
-            $_POST['id'] = '1';
-            $_POST['name'] = 'iPhone X';
-            $_POST['description'] = 'ini adalah iPhone X';
+            $this->adminController->productManagement();
+            $_GET['id'] = '12';
+            
+            $this->adminController->editProduct();
+            $_POST['id'] = '12';
+            $_FILES['image'] = 'iPhone4.jpg';
+            $_POST['name'] = 'iPhone 4';
             $_POST['category'] = 'iPhone';
-            $_POST['price'] = '10000';
-            $this->adminController->postAddProduct();
+            $_POST['price'] = 50000;
+            $_POST['color'] = 'blue';
+            $_POST['capacity'] = '256GB';
+            $_POST['stock'] = 500;
+            $_POST['description'] = 'this is an iPhone 4 the color is blue';
+            $this->adminController->postEditProduct();
+
+            $this->expectOutputRegex("[iPhone 4]");
         }
-        public function testDetailProduct()
-        {
-        }
+
+        
     }
 }

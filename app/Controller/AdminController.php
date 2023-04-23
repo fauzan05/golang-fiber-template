@@ -167,7 +167,7 @@ class AdminController
         $request->modified_at = null;
         try {
             // var_dump($_POST); die;
-            //var_dump($_FILES); die;
+            // var_dump($_FILES); die;
             //var_dump($_FILES['image']['name']); die;
             $this->userService->addProduct($request);
             //redirect ke halaman dashboard
@@ -241,7 +241,7 @@ class AdminController
         $request->id = $_POST['id'];
 
         try {
-            //var_dump($_FILES); die;
+            var_dump($request); die;
             $this->userService->editProduct($request);
             //redirect ke halaman dashboard
             View::Redirect('/toko_online/public/admin/productManagement');
@@ -254,8 +254,7 @@ class AdminController
                     'error' => $exception->getMessage(),
                     'user' => [
                         "username" => $user->username,
-                    ],
-                    "submit" => "Edit Product",
+                    ]
                 ]
             );
         }

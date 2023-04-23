@@ -39,153 +39,160 @@
         <a href="/toko_online/public/admin/productManagement" class="fa fa-arrow-left" style="text-decoration: none; color:black; letter-spacing:0.2rem"> Back</a>
         <div class="row mt-4 md-4 mx-5">
             <div class="col-lg-12 overflow-auto" style="border: 1px solid #dee2e6; height:65vh;">
-            <form action="/toko_online/public/admin/editProduct" method="post" enctype="multipart/form-data">
-        <div class="row gap-5 m-5">
-            <div class="col-lg-5">
-                <img class="mb-5" src="http://localhost/toko_online/public/assets/images/products/<?= $model['productImage'] ?? '' ?>" alt="" style="width: 350px; ">
-                <div class="input-group mb-3">
-                    <input type="file" class="form-control" id="inputGroupFile02" value="<?= $model['productImage'] ?? '' ?>">
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Id </label>
-                    <input class="form-control" type="text" placeholder="Disabled input" aria-label="Disabled input example" disabled value="<?= $model['productId'] ?>">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Name </label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" value="<?= $model['productName'] ?>">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleSelectInput" class="form-label">Category </label>
-                    <select class="form-select" name="gender" id="exampleSelectInput" aria-label="Default select example" style="width: 300px;">
-                        <option value="null">Choose The Category</option>
-                        <?php if ($model['productCategory'] == 'iPhone') { ?>
-                            <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
-                            <option value="iPad">iPad</option>
-                            <option value="Mac">Mac</option>
-                            <option value="Watch">Watch</option>
-                            <option value="Tv">Tv</option>
-                        <?php } else if ($model['productCategory'] == 'iPad') { ?>
-                            <option value="iPhone">iPhone</option>
-                            <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
-                            <option value="Mac">Mac</option>
-                            <option value="Watch">Watch</option>
-                            <option value="Tv">Tv</option>
-                        <?php } else if ($model['productCategory'] == 'Mac') { ?>
-                            <option value="iPhone">iPhone</option>
-                            <option value="iPhone">iPad</option>
-                            <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
-                            <option value="Watch">Watch</option>
-                            <option value="Tv">Tv</option>
-                        <?php } else if ($model['productCategory'] == 'Watch') { ?>
-                            <option value="iPhone">iPhone</option>
-                            <option value="iPhone">iPad</option>
-                            <option value="Mac">Mac</option>
-                            <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
-                            <option value="Tv">Tv</option>
-                        <?php } else if ($model['productCategory'] == 'Tv') { ?>
-                            <option value="iPhone">iPhone</option>
-                            <option value="iPhone">iPad</option>
-                            <option value="Mac">Mac</option>
-                            <option value="Watch">Watch</option>
-                            <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Color </label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" value="<?= $model['productColor'] ?>">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleSelectInput" class="form-label">Capacity </label>
-                    <select class="form-select" name="gender" id="exampleSelectInput" aria-label="Default select example" style="width: 300px;">
-                        <option value="null">Choose The Capacity</option>
-                        <?php if ($model['productCapacity'] == '8GB') { ?>
-                            <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
-                            <option value="16GB">16GB</option>
-                            <option value="32GB">32GB</option>
-                            <option value="64GB">64GB</option>
-                            <option value="128GB">128GB</option>
-                            <option value="256GB">256GB</option>
-                            <option value="512GB">512GB</option>
-                            <option value="1TB">1TB</option>
-                        <?php } else if ($model['productCapacity'] == '16GB') { ?>
-                            <option value="8GB">8GB</option>
-                            <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
-                            <option value="32GB">32GB</option>
-                            <option value="64GB">64GB</option>
-                            <option value="128GB">128GB</option>
-                            <option value="256GB">256GB</option>
-                            <option value="512GB">512GB</option>
-                            <option value="1TB">1TB</option>
-                        <?php } else if ($model['productCapacity'] == '32GB') { ?>
-                            <option value="8GB">8GB</option>
-                            <option value="16GB">16GB</option>
-                            <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
-                            <option value="64GB">64GB</option>
-                            <option value="128GB">128GB</option>
-                            <option value="256GB">256GB</option>
-                            <option value="512GB">512GB</option>
-                            <option value="1TB">1TB</option>
-                        <?php } else if ($model['productCapacity'] == '64GB') { ?>
-                            <option value="8GB">8GB</option>
-                            <option value="16GB">16GB</option>
-                            <option value="32GB">32GB</option>
-                            <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
-                            <option value="128GB">128GB</option>
-                            <option value="256GB">256GB</option>
-                            <option value="512GB">512GB</option>
-                            <option value="1TB">1TB</option>
-                        <?php } else if ($model['productCapacity'] == '128GB') { ?>
-                            <option value="8GB">8GB</option>
-                            <option value="16GB">16GB</option>
-                            <option value="32GB">32GB</option>
-                            <option value="64GB">64GB</option>
-                            <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
-                            <option value="256GB">256GB</option>
-                            <option value="512GB">512GB</option>
-                            <option value="1TB">1TB</option>
-                        <?php } else if ($model['productCapacity'] == '256GB') { ?>
-                            <option value="8GB">8GB</option>
-                            <option value="16GB">16GB</option>
-                            <option value="32GB">32GB</option>
-                            <option value="64GB">64GB</option>
-                            <option value="128GB">128GB</option>
-                            <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
-                            <option value="512GB">512GB</option>
-                            <option value="1TB">1TB</option>
-                        <?php } else if ($model['productCapacity'] == '512GB') { ?>
-                            <option value="8GB">8GB</option>
-                            <option value="16GB">16GB</option>
-                            <option value="32GB">32GB</option>
-                            <option value="64GB">64GB</option>
-                            <option value="128GB">128GB</option>
-                            <option value="256GB">256GB</option>
-                            <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
-                            <option value="1TB">1TB</option>
-                        <?php } else if ($model['productCapacity'] == '1TB') { ?>
-                            <option value="8GB">8GB</option>
-                            <option value="16GB">16GB</option>
-                            <option value="32GB">32GB</option>
-                            <option value="64GB">64GB</option>
-                            <option value="128GB">128GB</option>
-                            <option value="256GB">256GB</option>
-                            <option value="512GB">512GB</option>
-                            <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Price </label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" value="<?= $model['productPrice'] ?>">
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-    </form>
+                <form action="/toko_online/public/admin/editProduct" method="post" enctype="multipart/form-data">
+                    <div class="row gap-5 m-5">
+                        <div class="col-lg-5">
+                            <img class="mb-5" src="http://localhost/toko_online/public/assets/images/products/<?= $model['productImage'] ?? '' ?>" alt="" style="width: 350px; ">
+                            <div class="input-group mb-3">
+                                <input type="file" name="image" class="form-control" id="inputGroupFile02" value="<?= $model['productImage'] ?? '' ?>">
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Id </label>
+                                <input class="form-control" name="id" type="text" placeholder="Disabled input" aria-label="Disabled input example" readonly value="<?= $model['productId'] ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Name </label>
+                                <input type="text" name="name" class="form-control" id="exampleFormControlInput1" value="<?= $model['productName'] ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleSelectInput" class="form-label">Category </label>
+                                <select class="form-select" name="category" id="exampleSelectInput" aria-label="Default select example" style="width: 300px;">
+                                    <option value="null">Choose The Category</option>
+                                    <?php if ($model['productCategory'] == 'iPhone') { ?>
+                                        <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
+                                        <option value="iPad">iPad</option>
+                                        <option value="Mac">Mac</option>
+                                        <option value="Watch">Watch</option>
+                                        <option value="Tv">Tv</option>
+                                    <?php } else if ($model['productCategory'] == 'iPad') { ?>
+                                        <option value="iPhone">iPhone</option>
+                                        <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
+                                        <option value="Mac">Mac</option>
+                                        <option value="Watch">Watch</option>
+                                        <option value="Tv">Tv</option>
+                                    <?php } else if ($model['productCategory'] == 'Mac') { ?>
+                                        <option value="iPhone">iPhone</option>
+                                        <option value="iPhone">iPad</option>
+                                        <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
+                                        <option value="Watch">Watch</option>
+                                        <option value="Tv">Tv</option>
+                                    <?php } else if ($model['productCategory'] == 'Watch') { ?>
+                                        <option value="iPhone">iPhone</option>
+                                        <option value="iPhone">iPad</option>
+                                        <option value="Mac">Mac</option>
+                                        <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
+                                        <option value="Tv">Tv</option>
+                                    <?php } else if ($model['productCategory'] == 'Tv') { ?>
+                                        <option value="iPhone">iPhone</option>
+                                        <option value="iPhone">iPad</option>
+                                        <option value="Mac">Mac</option>
+                                        <option value="Watch">Watch</option>
+                                        <option value="<?= $model['productCategory'] ?>" selected><?= $model['productCategory'] ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Color </label>
+                                <input type="text" name="color" class="form-control" id="exampleFormControlInput1" value="<?= $model['productColor'] ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleSelectInput" class="form-label">Capacity </label>
+                                <select class="form-select" name="capacity" id="exampleSelectInput" aria-label="Default select example" style="width: 300px;">
+                                    <option value="null">Choose The Capacity</option>
+                                    <?php if ($model['productCapacity'] == '8GB') { ?>
+                                        <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
+                                        <option value="16GB">16GB</option>
+                                        <option value="32GB">32GB</option>
+                                        <option value="64GB">64GB</option>
+                                        <option value="128GB">128GB</option>
+                                        <option value="256GB">256GB</option>
+                                        <option value="512GB">512GB</option>
+                                        <option value="1TB">1TB</option>
+                                    <?php } else if ($model['productCapacity'] == '16GB') { ?>
+                                        <option value="8GB">8GB</option>
+                                        <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
+                                        <option value="32GB">32GB</option>
+                                        <option value="64GB">64GB</option>
+                                        <option value="128GB">128GB</option>
+                                        <option value="256GB">256GB</option>
+                                        <option value="512GB">512GB</option>
+                                        <option value="1TB">1TB</option>
+                                    <?php } else if ($model['productCapacity'] == '32GB') { ?>
+                                        <option value="8GB">8GB</option>
+                                        <option value="16GB">16GB</option>
+                                        <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
+                                        <option value="64GB">64GB</option>
+                                        <option value="128GB">128GB</option>
+                                        <option value="256GB">256GB</option>
+                                        <option value="512GB">512GB</option>
+                                        <option value="1TB">1TB</option>
+                                    <?php } else if ($model['productCapacity'] == '64GB') { ?>
+                                        <option value="8GB">8GB</option>
+                                        <option value="16GB">16GB</option>
+                                        <option value="32GB">32GB</option>
+                                        <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
+                                        <option value="128GB">128GB</option>
+                                        <option value="256GB">256GB</option>
+                                        <option value="512GB">512GB</option>
+                                        <option value="1TB">1TB</option>
+                                    <?php } else if ($model['productCapacity'] == '128GB') { ?>
+                                        <option value="8GB">8GB</option>
+                                        <option value="16GB">16GB</option>
+                                        <option value="32GB">32GB</option>
+                                        <option value="64GB">64GB</option>
+                                        <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
+                                        <option value="256GB">256GB</option>
+                                        <option value="512GB">512GB</option>
+                                        <option value="1TB">1TB</option>
+                                    <?php } else if ($model['productCapacity'] == '256GB') { ?>
+                                        <option value="8GB">8GB</option>
+                                        <option value="16GB">16GB</option>
+                                        <option value="32GB">32GB</option>
+                                        <option value="64GB">64GB</option>
+                                        <option value="128GB">128GB</option>
+                                        <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
+                                        <option value="512GB">512GB</option>
+                                        <option value="1TB">1TB</option>
+                                    <?php } else if ($model['productCapacity'] == '512GB') { ?>
+                                        <option value="8GB">8GB</option>
+                                        <option value="16GB">16GB</option>
+                                        <option value="32GB">32GB</option>
+                                        <option value="64GB">64GB</option>
+                                        <option value="128GB">128GB</option>
+                                        <option value="256GB">256GB</option>
+                                        <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
+                                        <option value="1TB">1TB</option>
+                                    <?php } else if ($model['productCapacity'] == '1TB') { ?>
+                                        <option value="8GB">8GB</option>
+                                        <option value="16GB">16GB</option>
+                                        <option value="32GB">32GB</option>
+                                        <option value="64GB">64GB</option>
+                                        <option value="128GB">128GB</option>
+                                        <option value="256GB">256GB</option>
+                                        <option value="512GB">512GB</option>
+                                        <option value="<?= $model['productCapacity'] ?>" selected><?= $model['productCapacity'] ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Stock </label>
+                                <input type="text" name="stock" class="form-control" id="exampleFormControlInput1" value="<?= $model['productStock'] ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Price </label>
+                                <input type="text" name="price" class="form-control" id="exampleFormControlInput1" value="<?= $model['productPrice'] ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                                <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="5"><?= trim($model['productDescription']) ?></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
