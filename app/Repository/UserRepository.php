@@ -237,7 +237,7 @@ class UserRepository
     }
     public function showAllProduct(): ?array
     {
-        $statement = $this->connection->prepare("SELECT id, name, category, price, color, capacity, image FROM products");
+        $statement = $this->connection->prepare("SELECT id, name, category, price, color, capacity, stock, image FROM products");
         $statement->execute();
         try {
             $produkArray = [];
@@ -250,6 +250,7 @@ class UserRepository
                     $produk->price = $row['price'];
                     $produk->color = $row['color'];
                     $produk->capacity = $row['capacity'];
+                    $produk->stock = $row['stock'];
                     $produk->image = $row['image'];
                     array_push($produkArray, $produk);
                 endforeach;
@@ -501,10 +502,25 @@ class UserRepository
             return null;
         }
     }
-    public function countAllTransaction($id)
+    public function countAllTransactionById($id)
     {
         $statement = $this->connection->prepare("SELECT COUNT(*) FROM order_details WHERE user_id = ?");
         $statement->execute([$id]);
+        try {
+            if ($row = $statement->fetchColumn()) {
+                $total = $row;
+                return $total;
+            } else {
+                return null;
+            }
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+    public function countAllTransaction()
+    {
+        $statement = $this->connection->prepare("SELECT COUNT(*) FROM payment_details");
+        $statement->execute();
         try {
             if ($row = $statement->fetchColumn()) {
                 $total = $row;

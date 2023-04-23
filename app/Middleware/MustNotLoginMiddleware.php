@@ -23,7 +23,7 @@ class MustNotLoginMiddleware implements Middleware
         $user = $this->sessionService->current();
         if($user != null)
         {
-            //View::Redirect('/toko_online/public/');
+            View::Redirect('/toko_online/public/');
         }
     }
 }

@@ -45,12 +45,14 @@ class HomeController
         }else if($user->status == 'admin'){
             $countProducts = $this->userRepository->countAllProduct();
             $countUsers = $this->userRepository->countAllUsers();
+            $countTransaction = $this->userRepository->countAllTransaction();
             View::Render('Admin/Dashboard', [
                 'title' => 'iStore Admin',
                 'logo' =>'iStore',
                 'user' => $user->username,
                 'countAllProducts' => $countProducts,
-                'countAllUsers' => $countUsers        
+                'countAllUsers' => $countUsers,
+                'countAllTransactions' => $countTransaction        
             ]);
         }
         

@@ -110,7 +110,7 @@ class UserController
     {
         $session = $this->sessionService->current();
         $user = $this->userRepository->findByUsername($session->username);
-        $transaction = $this->userRepository->countAllTransaction($session->id);
+        $transaction = $this->userRepository->countAllTransactionById($session->id);
         View::Render(
             'User/Profile',
             [
@@ -405,7 +405,7 @@ class UserController
     {
         $user = $this->sessionService->current();
         $order = $this->userRepository->showAllTransaction($user->id);
-        $count = $this->userRepository->countAllTransaction($user->id);
+        $count = $this->userRepository->countAllTransactionById($user->id);
         View::Render(
             'User/OrderHistory',
             [

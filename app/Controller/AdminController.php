@@ -32,10 +32,11 @@ class AdminController
 
     public function login()
     {
-            View::Render('Admin/Login', [
-                'title' => 'Login Admin',
-                'logo' => 'iStore'
-            ]); 
+        View::Render('Admin/Login', [
+            'title' => 'Login Admin',
+            'logo' => 'iStore',
+            'error' => null
+        ]);
     }
     public function postLogin()
     {
@@ -45,11 +46,11 @@ class AdminController
 
         try {
             $response = $this->userService->loginAdmin($request);
-                if ($response->user->status == 'admin') {
-                    $this->sessionService->createByUsername($response->user->username);
-                    //redirect to users/dashboard
-                    View::Redirect('/toko_online/public/');
-                }
+            if ($response->user->status == 'admin') {
+                $this->sessionService->createByUsername($response->user->username);
+                //redirect to users/dashboard
+                View::Redirect('/toko_online/public/');
+            }
             View::Render('Admin/Login', [
                 'title' => 'Login Admin',
                 'logo' => 'iStore',
@@ -65,24 +66,42 @@ class AdminController
     }
     public function logout()
     {
-        $this->sessionService->destroy();
+        $user = $this->sessionService->current();
+        if($user->status == 'admin'){
+            $this->sessionService->destroy();
         View::Redirect("/toko_online/public/");
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
+        
     }
     public function updatePassword()
     {
         $user = $this->sessionService->current();
-        View::Render('Admin/Password', [
-            "title" => "Update Admin Password",
-            "user" => [
-                "username" => $user->username
-            ]
-        ]);
+        if($user->status == 'admin'){
+            View::Render('Admin/Password', [
+                "title" => "Update Admin Password",
+                'logo' => 'iStore',
+                "user" => [
+                    "username" => $user->username
+                ]
+            ]);
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            ); 
+        }
+        
     }
     public function postUpdatePassword()
     {
         $user = $this->sessionService->current();
-
-        $request = new UserPasswordUpdateRequest();
+        if($user->status == 'admin'){
+            $request = new UserPasswordUpdateRequest();
         $request->username = $user->username;
         $request->oldPassword = $_POST['oldPassword'];
         $request->newPassword = $_POST['newPassword'];
@@ -96,6 +115,7 @@ class AdminController
                 'Admin/Password',
                 [
                     'title' => 'Update Admin Password',
+                    'logo' => 'iStore',
                     'error' => $exception->getMessage(),
                     'user' => [
                         "username" => $user->username,
@@ -103,21 +123,38 @@ class AdminController
                 ]
             );
         }
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
+        
     }
     public function addProduct()
     {
         $user = $this->sessionService->current();
-        View::Render('Admin/AddProduct', [
-            "title" => "Add Product",
-            "user" => [
-                "username" => $user->username
-            ]
-        ]);
+        if($user->status == 'admin'){
+            View::Render('Admin/AddProduct', [
+                "title" => "Add Product",
+                'logo' => 'iStore',
+                "user" => [
+                    "username" => $user->username
+                ]
+            ]);
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
+        
     }
     public function postAddProduct()
     {
         $user = $this->sessionService->current();
-        $request = new AddProductRequest();
+        if($user->status == 'admin'){
+            $request = new AddProductRequest();
         $request->image = $_FILES['image'];
         $request->name = $_POST['name'];
         $request->category = $_POST['category'];
@@ -140,6 +177,7 @@ class AdminController
                 'Admin/AddProduct',
                 [
                     'title' => 'Add Product',
+                    'logo' => 'iStore',
                     'error' => $exception->getMessage(),
                     'user' => [
                         "username" => $user->username,
@@ -148,14 +186,23 @@ class AdminController
                 ]
             );
         }
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
+        
     }
     public function editProduct()
     {
         $user = $this->sessionService->current();
-        $locationImage = "http://localhost/toko_online/public/assets/images/products/";
+        if($user->status == 'admin'){
+            $locationImage = "http://localhost/toko_online/public/assets/images/products/";
         $product = $this->userRepository->findProductsById($_GET['id']);
         View::Render('Admin/EditProduct', [
             "title" => "Edit Product",
+            'logo' => 'iStore',
             "user" => [
                 "username" => $user->username
             ],
@@ -170,11 +217,19 @@ class AdminController
             "productCategory" => $product->category,
             "productPrice" => $product->price
         ]);
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
+        
     }
     public function postEditProduct()
     {
         $user = $this->sessionService->current();
-        $request = new EditProductRequest();
+        if($user->status == 'admin'){
+            $request = new EditProductRequest();
         $request->image = $_FILES['image'];
         $request->name = $_POST['name'];
         $request->category = $_POST['category'];
@@ -194,6 +249,7 @@ class AdminController
             View::Render(
                 'Admin/EditProduct',
                 [
+                    'logo' => 'iStore',
                     'title' => 'Edit Product',
                     'error' => $exception->getMessage(),
                     'user' => [
@@ -203,55 +259,88 @@ class AdminController
                 ]
             );
         }
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
+        
     }
     public function deleteProduct()
     {
-        $this->sessionService->current();
-        View::Render('Admin/Delete', []);
-        $id = $_GET['id'];
+        $user = $this->sessionService->current();
+        if($user->status == 'admin'){
+            View::Render('Admin/Delete', []);
+            $id = $_GET['id'];
         if (isset($id)) {
             $this->userRepository->deleteProductById($id);
             View::Redirect('/toko_online/public/admin/productManagement');
         }
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
+        
     }
     public function deleteUser()
     {
-        $this->sessionService->current();
-        View::Render('Admin/Delete', []);
-        $id = $_GET['id'];
-        if(isset($id))
-        {
+        $user = $this->sessionService->current();
+        if($user->status == 'admin'){
+            View::Render('Admin/Delete', []);
+            $id = $_GET['id'];
+        if (isset($id)) {
             $this->userRepository->deleteUserById($id);
             View::Redirect('/toko_online/public/admin/userManagement');
+        }  
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
         }
+        
     }
     public function productDetail()
     {
-        $this->sessionService->current();
-        $locationImage = "http://localhost/toko_online/public/assets/images/products/";
-        $product = $this->userRepository->findProductsById($_GET['id']);
-        View::Render('Admin/DetailProduct',[
-          'title' => 'Product Detail',
-          "productId" => $product->id,
-          "productName" => $product->name,
-          "imageLocation" => $locationImage,
-          "productImage" => $product->image,
-          "productStock" => $product->stock,
-          "productColor" => $product->color,
-          "productCapacity" => $product->capacity,
-          "productDescription" => $product->description,
-          "productCategory" => $product->category,
-          "productPrice" => $product->price,
-          "productCreatedAt" => $product->created_at,
-          "productModifiedAt" => $product->modified_at
-        ]);
+        $user = $this->sessionService->current();
+        if($user->status == 'admin'){
+            $locationImage = "http://localhost/toko_online/public/assets/images/products/";
+            $product = $this->userRepository->findProductsById($_GET['id']);
+            View::Render('Admin/DetailProduct', [
+                'logo' => 'iStore',
+                'title' => 'Product Detail',
+                "productId" => $product->id,
+                "productName" => $product->name,
+                "imageLocation" => $locationImage,
+                "productImage" => $product->image,
+                "productStock" => $product->stock,
+                "productColor" => $product->color,
+                "productCapacity" => $product->capacity,
+                "productDescription" => $product->description,
+                "productCategory" => $product->category,
+                "productPrice" => $product->price,
+                "productCreatedAt" => $product->created_at,
+                "productModifiedAt" => $product->modified_at
+            ]);
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
+       
     }
     public function userDetail()
     {
-        $this->sessionService->current();
-        $user = $this->userRepository->findById($_GET['id']);
-        View::Render('Admin/DetailUser',[
-          'title' => 'Product Detail',
+        $user = $this->sessionService->current();
+        if($user->status == 'admin'){
+            $user = $this->userRepository->findById($_GET['id']);
+        View::Render('Admin/DetailUser', [
+            'logo' => 'iStore',
+            'title' => 'Product Detail',
             'userId' => $user->id,
             'userName' => $user->username,
             'userFirstname' => $user->firstname,
@@ -266,33 +355,56 @@ class AdminController
             'userStatus' => $user->status,
             'userJoinedAt' => $user->created_at
         ]);
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
+        
     }
     public function productManagement()
     {
         $user = $this->sessionService->current();
-        $countProducts = $this->userRepository->countAllProduct();
-        $products = $this->userRepository->showAllProduct();
-        View::Render('Admin/ProductManagement', [
-            "title" => "iStore Admin",
-            "user" => [
-                "username" => $user->username
-            ],
-            "showAllProducts" => $products,
-            "countAllProducts" => $countProducts
-        ]);
+        if ($user->status == 'admin') {
+            $countProducts = $this->userRepository->countAllProduct();
+            $products = $this->userRepository->showAllProduct();
+            View::Render('Admin/ProductManagement', [
+                "title" => "iStore Admin",
+                'logo' => 'iStore',
+                "user" => [
+                    "username" => $user->username
+                ],
+                "showAllProducts" => $products,
+                "countAllProducts" => $countProducts
+            ]);
+        } else {
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
     }
     public function userManagement()
     {
         $user = $this->sessionService->current();
-        $users = $this->userRepository->showAllUser();
-        $countUsers = $this->userRepository->countAllUsers();
-        View::Render('Admin/UserManagement', [
-            "title" => "iStore Admin",
-            "user" => [
-                "username" => $user->username
-            ],
-            "showAllUsers" => $users,
-            "countAllUsers" => $countUsers
-        ]);
+        if ($user->status == 'admin') {
+            $users = $this->userRepository->showAllUser();
+            $countUsers = $this->userRepository->countAllUsers();
+            View::Render('Admin/UserManagement', [
+                "title" => "iStore Admin",
+                'logo' => 'iStore',
+                "user" => [
+                    "username" => $user->username
+                ],
+                "showAllUsers" => $users,
+                "countAllUsers" => $countUsers
+            ]);
+        }else{
+            View::Render(
+                'Home/NotFound',
+                []
+            );
+        }
     }
 }
