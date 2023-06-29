@@ -15,4 +15,5 @@ class AddProductRequest
     public ?array $image = null;
     public ?string $created_at = null;
     public ?string $modified_at = null;
+
 }

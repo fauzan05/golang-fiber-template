@@ -67,3 +67,37 @@ class HomeControllerTest extends TestCase
         
     }
 }
+
+
+class UploadTest extends TestCase
+{
+    public function testUpload()
+    {
+        // Set file path and name
+        $filePath = __DIR__ . '/test_files/';
+        $fileName = 'test_image.jpg';
+        $fileFullPath = $filePath . $fileName;
+
+        // Create a temporary file to simulate uploaded file
+        $tmpFile = tempnam(sys_get_temp_dir(), 'PHP');
+        copy($fileFullPath, $tmpFile);
+
+        // Set $_FILES global variable
+        $_FILES = array(
+            'userfile' => array(
+                'name' => $fileName,
+                'type' => 'image/jpeg',
+                'tmp_name' => $tmpFile,
+                'error' => UPLOAD_ERR_OK,
+                'size' => filesize($tmpFile)
+            )
+        );
+
+        // Call the upload script
+        require_once('upload_script.php');
+
+        // Assert that the file has been uploaded successfully
+        $this->assertTrue(file_exists($filePath . 'uploaded_files/' . $fileName));
+    }
+}
+

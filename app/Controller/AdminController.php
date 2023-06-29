@@ -154,7 +154,7 @@ class AdminController
     {
         $user = $this->sessionService->current();
         if($user->status == 'admin'){
-            $request = new AddProductRequest();
+        $request = new AddProductRequest();
         $request->image = $_FILES['image'];
         $request->name = $_POST['name'];
         $request->category = $_POST['category'];
@@ -229,7 +229,7 @@ class AdminController
     {
         $user = $this->sessionService->current();
         if($user->status == 'admin'){
-            $request = new EditProductRequest();
+        $request = new EditProductRequest();
         $request->image = $_FILES['image'];
         $request->name = $_POST['name'];
         $request->category = $_POST['category'];
@@ -241,7 +241,8 @@ class AdminController
         $request->id = $_POST['id'];
 
         try {
-            var_dump($request); die;
+            var_dump($request->image); die;
+            // var_dump($request); die;
             $this->userService->editProduct($request);
             //redirect ke halaman dashboard
             View::Redirect('/toko_online/public/admin/productManagement');

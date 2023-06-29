@@ -41,6 +41,9 @@
       <hr>
       <h3 class="text-center"><?= $model['countAllProducts'] ?></h3>
     </div>
+    <div class="col-lg-3 m-4">
+    <a class="btn btn-primary" href="/toko_online/public/admin/addProduct" role="button">Add Products</a>
+    </div>
     <div class="row grid gap-5 pt-5" style="display: flex; justify-content:center;">
     <div class="col-lg-10 overflow-auto" style="height: 300px;">
     <table class="table table-striped">

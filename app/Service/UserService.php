@@ -33,6 +33,7 @@ use Fauzannurhidayat\Php\TokoOnline\Model\UserProfileUpdateResponse;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserRegisterRequest;
 use Fauzannurhidayat\Php\TokoOnline\Model\UserRegisterResponse;
 use Fauzannurhidayat\Php\TokoOnline\Repository\UserRepository;
+
 use PhpParser\Node\Expr\Isset_;
 use PHPUnit\Util\Xml\ValidationResult;
 use PHPUnit\Util\Xml\Validator;
@@ -362,7 +363,6 @@ class UserService
             throw new ValidationException('this image fail to upload');
         }
         return $newFileName;
-        
     }
     private function validateEditProductRequest(EditProductRequest $editProductRequest)
     {
