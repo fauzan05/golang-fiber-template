@@ -11,15 +11,15 @@
         <form action="#" method="post">
             <div class="mb-3">
                 <label for="input1" class="form-label">Id Role</label>
-                <input type="text" class="form-control" id="input1">
+                <input type="text" name="idRole" class="form-control" id="input1">
             </div>
             <div class="mb-3">
                 <label for="input2" class="form-label">Name Role</label>
-                <input type="text" class="form-control" id="input2">
+                <input type="text" name="nameRole" class="form-control" id="input2">
             </div>
             <div class="mb-3">
                 <label for="input3" class="form-label">Keterangan</label>
-                <input type="text" class="form-control" id="input3">
+                <input type="text" name="keteranganRole" class="form-control" id="input3">
             </div>
 
             <button type="submit" class="btn btn-primary">Save</button>
